@@ -1,0 +1,21 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+  "id": "d6c999c5-932b-446a-b9d7-a1088f52484f",
+  "alias": "ListviewWebPart",
+  "componentType": "WebPart",
+  "version": "*",
+  "manifestVersion": 2,
+  "requiresCustomScript": false,
+  "supportedHosts": ["SharePointWebPart"],
+  "preconfiguredEntries": [{
+    "groupId": "5c03119e-3074-46fd-976b-c60198311f70",
+    "group": { "default": "Other" },
+    "title": { "default": "listview" },
+    "description": { "default": "listview description" },
+    "iconImageUrl": "https://png.pngtree.com/element_origin_min_pic/16/11/23/f25a64035f9dbcd37c3120a2bc83804b.jpg", 
+    "officeFabricIconFontName": "Page",
+    "properties": {
+      "description": "listview"
+    }
+  }]
+}

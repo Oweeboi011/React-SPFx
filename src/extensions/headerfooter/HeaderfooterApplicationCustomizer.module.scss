@@ -1,0 +1,43 @@
+.app{   
+  .header {
+      height:120px;
+      text-align:left;
+      line-height:2.5;
+      font-weight:bold;
+      display: flex;
+      align-items: left;
+      margin-left: 5px;
+      // justify-content: center;
+      background-color: #2B2B2B;
+    }
+    .mainBG{
+      background-color: #2B2B2B;
+    }
+    .footer {
+      height:60px;
+      text-align:center;
+      line-height:2.5;
+      font-weight:bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #2B2B2B;
+    }
+    // img{
+    //   max-width: 100%;
+    //   height: 120px;
+    // }
+    .iconImgsFooter {
+      max-width: 100%;
+      height: 40px;
+      
+    }
+    .iconImgsHeader {
+      max-width: 100%;
+      height: 130px;
+      margin-left: 20px;
+    }
+    .headerImg{
+      src: 'xx';
+    }
+  }

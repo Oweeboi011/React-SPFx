@@ -1,0 +1,48 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "menuwebpart-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/menuwebpart/MenuwebpartWebPart.js",
+          "manifest": "./src/webparts/menuwebpart/MenuwebpartWebPart.manifest.json"
+        }
+      ]
+    },
+    "headerfooter-application-customizer": {
+      "components": [
+        {
+          "entrypoint": "./lib/extensions/headerfooter/HeaderfooterApplicationCustomizer.js",
+          "manifest": "./src/extensions/headerfooter/HeaderfooterApplicationCustomizer.manifest.json"
+        }
+      ]
+    },
+    "listview-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/listview/ListviewWebPart.js",
+          "manifest": "./src/webparts/listview/ListviewWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {
+    "jquery": {
+      "path": "./src/scripts/jquery.min.js",
+      "globalName": "jquery"
+    },
+    "bootstrap": {
+      "path": "./src/scripts/bootstrap.min.js",
+      "globalName": "bootstrap",
+      "globalDependencies": [
+        "jquery"
+      ]
+    }
+  },
+  "localizedResources": {
+    "MenuwebpartWebPartStrings": "lib/webparts/menuwebpart/loc/{locale}.js",
+    "HeaderfooterApplicationCustomizerStrings": "lib/extensions/headerfooter/loc/{locale}.js",
+    "ListviewWebPartStrings": "lib/webparts/listview/loc/{locale}.js"
+  }
+}
