@@ -2,14 +2,14 @@
   "$schema": "https://developer.microsoft.com/json-schemas/core-build/serve.schema.json",
   "port": 4321,
   "https": true,
-  "initialPage": "https://localhost:5432/workbench",
+  //"initialPage": "https://localhost:5432/workbench",
   "api": {
     "port": 5432,
     "entryPath": "node_modules/@microsoft/sp-webpart-workbench/lib/api/"
   },
   "serveConfigurations": {
     "default": {
-      "pageUrl": "https://accenturemanilapdc.sharepoint.com/sites/siteakuminao365/SitePages/Home.aspx",
+      "pageUrl": "https://accenturemanilapdc.sharepoint.com/sites/siteakuminao365/SitePages/Home.aspx",//"https://contoso.sharepoint.com/sites/mySite/SitePages/myPage.aspx",
       "customActions": {
         "1d0f9fa8-57a6-481c-bc63-0c298d8302c0": {
           "location": "ClientSideExtension.ApplicationCustomizer",

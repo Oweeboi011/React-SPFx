@@ -30,13 +30,19 @@
     "@microsoft/sp-office-ui-fabric-core": "1.8.0",
     "@microsoft/sp-property-pane": "1.8.0",
     "@microsoft/sp-webpart-base": "1.8.0",
+    "@types/bootstrap": "^4.3.0",
     "@types/es6-promise": "0.0.33",
     "@types/react": "16.4.2",
     "@types/react-dom": "16.0.5",
     "@types/webpack-env": "1.13.1",
+    "bootstrap": "^4.3.1",
+    "jquery": "^3.3.1",
     "office-ui-fabric-react": "5.135.0",
+    "popper.js": "^1.14.7",
     "react": "16.7.0",
-    "react-dom": "16.7.0"
+    "react-bootstrap": "^1.0.0-beta.6",
+    "react-dom": "16.7.0",
+    "typescript": "^3.2.4"
   },
   "resolutions": {
     "@types/react": "16.4.2"

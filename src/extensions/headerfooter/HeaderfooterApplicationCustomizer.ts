@@ -9,7 +9,7 @@ import * as strings from 'HeaderfooterApplicationCustomizerStrings';
 
 const LOG_SOURCE: string = 'HeaderfooterApplicationCustomizer';
 import { escape } from '@microsoft/sp-lodash-subset';
-
+// import 'bootstrap';
 
 const HEADER_TEXT: string = "TOP ZOOOOOOOOOOOOOOOOOOONEEEEEE";
 const FOOTER_TEXT: string = "BOTTOM ZOOOOOOOOOOOOOOOOOOONEEEEEE";
@@ -17,19 +17,13 @@ const log_STR: string = "https://accenturemanilapdc.sharepoint.com/sites/siteaku
 const react_STR: string = "https://accenturemanilapdc.sharepoint.com/sites/siteakuminao365/SiteAssets/logos/react.png";
 import { SPComponentLoader } from '@microsoft/sp-loader';
 
+import $ from '../../scripts/jquery.min.js';
 require('jquery');
 require('bootstrap');
-
-import $ from '../../scripts/jquery.min.js';
+require('popper.js');
 
 import onStyle from './HeaderfooterApplicationCustomizer.module.scss';
-/**
- * If your command set uses the ClientSideComponentProperties JSON input,
- * it will be deserialized into the BaseExtension.properties object.
- * You can define an interface to describe it.
- */
 export interface IHeaderfooterApplicationCustomizerProperties {
-  // This is an example; replace with your own property
   testMessage: string;
 }
 
@@ -38,9 +32,9 @@ export default class HeaderfooterApplicationCustomizer
   extends BaseApplicationCustomizer<IHeaderfooterApplicationCustomizerProperties> {
 
   @override
-  public onInit(): Promise<void> {
-   
-    let cssURL = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css";
+  public onInit(): Promise<void> {   
+    let cssURL = "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css";
+    https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.4/umd/popper.min.js
     SPComponentLoader.loadCss(cssURL);
 
     //hide sp components
@@ -51,12 +45,10 @@ export default class HeaderfooterApplicationCustomizer
     $( "div[class^='feedback_']" ).hide(); //hide feedback section
     $( "div[class^='commentsWrapper']" ).hide(); //hide comments section
     $( "div[class^='pageLayout_']").css("background-color", "white");
-    
-    var bgMain = document.getElementById('spPageChromeAppDiv');
-
-    bgMain.setAttribute('style', 'background-color: #2B2B2B;');
-    //commandBarWrapper
-    var mainCanvas = document.getElementsByClassName("SPCanvas")[0].setAttribute('style', 'background-color: #2B2B2B;');
+   
+    $( "#spPageChromeAppDiv").css("background-color", "#2B2B2B");
+    $( ".SPCanvas").css("background-color", "#2B2B2B");
+    //var mainCanvas = document.getElementsByClassName("SPCanvas")[0].setAttribute('style', 'background-color: #2B2B2B;');
     console.log("Available placeholders: ",
       this.context.placeholderProvider.placeholderNames.join(", "));
 
@@ -68,33 +60,47 @@ export default class HeaderfooterApplicationCustomizer
                   <div class="ms-bgColor-themeDark ms-fontColor-white ${onStyle.header}">
                     <img src=${escape(log_STR)} class=${onStyle.iconImgsHeader}></img>
                     </div>
-                    <nav class="navbar navbar-inverse">
-                    <div class="container-fluid">
-                      <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                          <span class="icon-bar"></span>
-                          <span class="icon-bar"></span>
-                          <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="#">Menu</a>
-                      </div>
-                      <div class="collapse navbar-collapse" id="myNavbar">
-                        <ul class="nav navbar-nav">
-                          <li class="active"><a href="#">Home</a></li>
-                          <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Bikes Components<span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                              <li><a href="#">Framesets </a></li>
-                              <li><a href="#">Tire and Rims </a></li>
-                              <li><a href="#">Other Component and Parts</a></li>
-                            </ul>
-                          </li>
-                          <li><a href="#">Ride Gallery</a></li>
-                          <li><a href="#">Routes</a></li>
-                        </ul>
-                        <ul class="nav navbar-nav navbar-right">                       
-                        </ul>
-                      </div>
+                    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                    <a class="navbar-brand" href="#">Navbar</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                      <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                      <ul class="navbar-nav">
+                        <li class="nav-item active">
+                          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="#">Features</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="#">Pricing</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Bikes
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink1">
+                          <a class="dropdown-item" href="#">Fixed Gears</a>
+                          <a class="dropdown-item" href="#">Single Speed SSCX</a>
+                          <a class="dropdown-item" href="#">Road</a>
+                          <a class="dropdown-item" href="#">Gravel</a>
+                          <a class="dropdown-item" href="#">Mountain Bike</a>
+                        </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Bike Components
+                          </a>
+                          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
+                            <a class="dropdown-item" href="#">Framesets</a>
+                            <a class="dropdown-item" href="#">Wheelsets</a>
+                            <a class="dropdown-item" href="#">Groupsets</a>
+                            <a class="dropdown-item" href="#">Brakesets</a>
+                            <a class="dropdown-item" href="#">Other Components</a>
+                          </div>
+                        </li>
+                      </ul>
                     </div>
                   </nav>
                   </div>`;

@@ -10,8 +10,9 @@ export default class Menuwebpart extends React.Component<IMenuwebpartProps, {}> 
       alert('News link clicked');
     }
   }
-  public render(): React.ReactElement<IMenuwebpartProps> {
+  public render(): JSX.Element {
     return (
+      <div>
       <div className="ms-NavExample-LeftPane">
         <Nav groups={[
             {
@@ -70,6 +71,25 @@ export default class Menuwebpart extends React.Component<IMenuwebpartProps, {}> 
           expandButtonAriaLabel={'Expand or collapse'}
         />
       </div>
+      </div>
     );
   }
-}
+  }
+  class DivContent extends React.Component{
+    render() {
+      return (
+        <div>
+          <h1>This would be the DivContent</h1>
+        </div>
+      );
+    }
+  }
+  class CompOWEE extends React.Component{
+    render() {
+      return (
+        <div>
+          <h1>This would be the CompOWEE</h1>
+        </div>
+      );
+    }
+  }

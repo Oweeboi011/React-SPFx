@@ -9,7 +9,7 @@
   "supportedHosts": ["SharePointWebPart"],
   "preconfiguredEntries": [{
     "groupId": "5c03119e-3074-46fd-976b-c60198311f70", 
-    "group": { "default": "Other" },
+    "group": { "default": "Featured" },
     "title": { "default": "menuwebpart" },
     "description": { "default": "menuwebpart description" },
     

@@ -10,14 +10,6 @@
         }
       ]
     },
-    "headerfooter-application-customizer": {
-      "components": [
-        {
-          "entrypoint": "./lib/extensions/headerfooter/HeaderfooterApplicationCustomizer.js",
-          "manifest": "./src/extensions/headerfooter/HeaderfooterApplicationCustomizer.manifest.json"
-        }
-      ]
-    },
     "listview-web-part": {
       "components": [
         {
@@ -25,24 +17,57 @@
           "manifest": "./src/webparts/listview/ListviewWebPart.manifest.json"
         }
       ]
+    },
+    "imagecarousel-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/imagecarousel/ImagecarouselWebPart.js",
+          "manifest": "./src/webparts/imagecarousel/ImagecarouselWebPart.manifest.json"
+        }
+      ]
+    },
+    "samplewebpart-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/samplewebpart/SamplewebpartWebPart.js",
+          "manifest": "./src/webparts/samplewebpart/SamplewebpartWebPart.manifest.json"
+        }
+      ]
+    },
+    "headerfooter-application-customizer": {
+      "components": [
+        {
+          "entrypoint": "./lib/extensions/headerfooter/HeaderfooterApplicationCustomizer.js",
+          "manifest": "./src/extensions/headerfooter/HeaderfooterApplicationCustomizer.manifest.json"
+        }
+      ]
     }
   },
   "externals": {
     "jquery": {
-      "path": "./src/scripts/jquery.min.js",
+      "path": "https://code.jquery.com/jquery-3.2.1.slim.min.js", //"./src/scripts/jquery.min.js",
       "globalName": "jquery"
     },
     "bootstrap": {
-      "path": "./src/scripts/bootstrap.min.js",
+      "path": "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js",//./src/scripts/bootstrap.min.js",
       "globalName": "bootstrap",
+      "globalDependencies": [
+        "jquery"
+      ]
+    },
+    "popper.js": {
+      "path": "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.4/umd/popper.min.js",//./src/scripts/bootstrap.min.js",
+      "globalName": "popper.js",
       "globalDependencies": [
         "jquery"
       ]
     }
   },
-  "localizedResources": {
+    "localizedResources": {
     "MenuwebpartWebPartStrings": "lib/webparts/menuwebpart/loc/{locale}.js",
     "HeaderfooterApplicationCustomizerStrings": "lib/extensions/headerfooter/loc/{locale}.js",
-    "ListviewWebPartStrings": "lib/webparts/listview/loc/{locale}.js"
+    "ListviewWebPartStrings": "lib/webparts/listview/loc/{locale}.js",
+    "ImagecarouselWebPartStrings": "lib/webparts/imagecarousel/loc/{locale}.js",
+    "SamplewebpartWebPartStrings": "lib/webparts/samplewebpart/loc/{locale}.js"
   }
 }

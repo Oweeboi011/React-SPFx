@@ -13,7 +13,6 @@
     "title": { "default": "listview" },
     "description": { "default": "listview description" },
     "iconImageUrl": "https://png.pngtree.com/element_origin_min_pic/16/11/23/f25a64035f9dbcd37c3120a2bc83804b.jpg", 
-    "officeFabricIconFontName": "Page",
     "properties": {
       "description": "listview"
     }

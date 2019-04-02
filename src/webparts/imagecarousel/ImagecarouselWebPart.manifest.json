@@ -1,0 +1,20 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+  "id": "0b7aa819-c247-47c4-a052-12e3cd44741a",
+  "alias": "ImagecarouselWebPart",
+  "componentType": "WebPart",
+  "version": "*",
+  "manifestVersion": 2,
+  "requiresCustomScript": false,
+  "supportedHosts": ["SharePointWebPart"],
+  "preconfiguredEntries": [{
+    "groupId": "5c03119e-3074-46fd-976b-c60198311f70", 
+    "group": { "default": "Other" },
+    "title": { "default": "imagecarousel" },
+    "description": { "default": "image carousel" },
+    "iconImageUrl": "https://purepng.com/public/uploads/large/purepng.com-carouselcarousela-carouselmerry-go-roundseats-1701528130641f9zf0.png",
+    "properties": {
+      "description": "imagecarousel"
+    }
+  }]
+}
