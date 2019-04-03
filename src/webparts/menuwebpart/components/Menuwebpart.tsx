@@ -5,10 +5,10 @@ import { escape } from '@microsoft/sp-lodash-subset';
 import { Nav, INavLink } from 'office-ui-fabric-react/lib/Nav';
 
 export default class Menuwebpart extends React.Component<IMenuwebpartProps, {}> {
-  public onLinkClick = (ev: React.MouseEvent<HTMLElement>, item?: INavLink) => {
-    if (item && item.name === 'News') {
-      alert('News link clicked');
-    }
+  public onLinkClick = (ev: React.MouseEvent<HTMLElement>, item?: INavLink) => {    
+      ev.preventDefault();
+      alert(item.name + ' link has been clicked. Please visit ' + item.url);
+      window.open(item.url);
   }
   public render(): JSX.Element {
     return (
@@ -18,56 +18,61 @@ export default class Menuwebpart extends React.Component<IMenuwebpartProps, {}> 
             {
               links: [
                 {
-                  name: 'Home',
-                  url: 'http://example.com',
+                  name: 'Adventure/Gravel Bikes',
+                  url: '#',
                   links: [
                     {
-                      name: 'Activity',
-                      url: 'http://msn.com',
+                      name: 'Surly',
+                      url: 'https://surlybikes.com/bikes',
                       key: 'key1'
                     },
                     {
-                      name: 'MSN',
-                      url: 'http://msn.com',
+                      name: 'All-City Cycles',
+                      url: 'https://allcitycycles.com/bikes',
                       key: 'key2'
+                    },
+                    {
+                      name: 'Soma Fabrications',
+                      url: 'https://www.somafab.com/bikes-frames/bicycles',
+                      key: 'key3'
+                    },
+                    {
+                      name: 'Marin',
+                      url: 'https://www.marinbikes.com/',
+                      key: 'key4'
                     }
                   ],
                   isExpanded: true
                 },
                 {
-                  name: 'Documents',
-                  url: 'http://example.com',
-                  key: 'key3',
+                  name: 'Mountain Bikes',
+                  url: '#',
+                  key: 'key5',
                   isExpanded: true
                 },
                 {
-                  name: 'Pages',
-                  url: 'http://msn.com',
-                  key: 'key4'
-                },
-                {
-                  name: 'Notebook',
-                  url: 'http://msn.com',
-                  key: 'key5'
-                },
-                {
-                  name: 'Communication and Media',
-                  url: 'http://msn.com',
+                  name: 'Road Bikes',
+                  url: '#',
                   key: 'key6'
                 },
                 {
-                  name: 'News',
-                  url: 'http://cnn.com',
-                  icon: 'News',
-                  key: 'key7'
-                }
+                  name: 'Fixed Gear',
+                  url: '#',
+                  key: 'key7',
+                  
+                },
+                {
+                  name: 'BMX',
+                  url: '#',
+                  key: 'key8'
+                },
               ]
             }
           ]}
           onLinkClick={this.onLinkClick}
           expandedStateText={'expanded'}
           collapsedStateText={'collapsed'}
-          selectedKey={'key3'}
+          selectedKey={'key1'}
           expandButtonAriaLabel={'Expand or collapse'}
         />
       </div>

@@ -6,7 +6,9 @@
     margin: 0px auto;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
   }
-
+  .Canvas.Canvas{
+    max-width:initial;
+}
   .row {
     @include ms-Grid-row;
     @include ms-fontColor-white;
@@ -71,4 +73,49 @@
       display: inline-block;
     }
   }
+  // :global {
+    .itemCell { // .ms-ListBasicExample-itemCell
+      @include ms-focus-border();
+  
+      min-height: 54px;
+      padding: 10px;
+      box-sizing: border-box;
+      border-bottom: 1px solid;
+      display: flex;
+    }
+  
+    .itemCell:hover {
+      background: #EEE;
+    }
+  
+    .itemImage { //.ms-ListBasicExample-itemImage
+      flex-shrink: 0;
+    }
+  
+    .itemContent { //.ms-ListBasicExample-itemContent
+      @include ms-margin-left(10px);
+      overflow: hidden;
+      flex-grow: 1;
+    }
+  
+    .itemName { //.ms-ListBasicExample-itemName 
+      @include ms-font-xl;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  
+    .itemIndex { // .ms-ListBasicExample-itemIndex 
+      font-size: $ms-font-size-s;
+      color: $ms-color-neutralTertiary;
+      margin-bottom: 10px;
+    }
+  
+    .chevron {  //.ms-ListBasicExample-chevron 
+      align-self: center;
+      @include ms-margin-left(10px);
+      color: $ms-color-neutralTertiary;
+      font-size: $ms-font-size-l;
+      flex-shrink: 0;
+    }
 }

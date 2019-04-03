@@ -34,7 +34,6 @@ export default class HeaderfooterApplicationCustomizer
   @override
   public onInit(): Promise<void> {   
     let cssURL = "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css";
-    https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.4/umd/popper.min.js
     SPComponentLoader.loadCss(cssURL);
 
     //hide sp components
