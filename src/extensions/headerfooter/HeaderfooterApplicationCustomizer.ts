@@ -40,7 +40,7 @@ export default class HeaderfooterApplicationCustomizer
     // var suiteBar = document.getElementById('SuiteNavPlaceHolder');
     // suiteBar.setAttribute("style", "display: none !important");
     $( "#SuiteNavPlaceHolder" ).hide(); //hide site nav
-    $( "div[class^='root-']" ).hide(); //hide root bar
+    $( "div[class^='mainRow-']" ).hide(); //hide root bar
     $( "div[class^='feedback_']" ).hide(); //hide feedback section
     $( "div[class^='commentsWrapper']" ).hide(); //hide comments section
     $( "div[class^='pageLayout_']").css("background-color", "white");
@@ -69,12 +69,6 @@ export default class HeaderfooterApplicationCustomizer
                         <li class="nav-item active">
                           <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                         </li>
-                        <li class="nav-item">
-                          <a class="nav-link" href="#">Features</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" href="#">Pricing</a>
-                        </li>
                         <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Bikes
@@ -99,6 +93,12 @@ export default class HeaderfooterApplicationCustomizer
                             <a class="dropdown-item" href="#">Other Components</a>
                           </div>
                         </li>
+                        <li class="nav-item">
+                        <a class="nav-link" href="/sites/ReactSPFX/_layouts/15/viewlsts.aspx">Site Contents</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="/sites/ReactSPFX/_layouts/15/settings.aspx">Site Settings</a>
+                      </li>
                       </ul>
                     </div>
                   </nav>
