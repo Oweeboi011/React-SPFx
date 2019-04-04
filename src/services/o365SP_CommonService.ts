@@ -3,19 +3,11 @@ import { Context } from 'react';
 import { WebPartContext } from '@microsoft/sp-webpart-base';
 import { IODataList } from '@microsoft/sp-odata-types';
 
-export function renderDataGrid(currentProps, currentState): any {
-  currentState._spItems = [];
+export function renderMenuNav(currentProps, currentState): any {
+  currentState._menuItems = [];
 
-  //------- COMMENTED FOR TEST
-  // let currentWebUrl = "https://accenturemanilapdc.sharepoint.com/sites/siteakuminao365" //test live URL
-  // let _requestUrl = currentWebUrl.concat("/_api/web/Lists/GetByTitle('" + "AkuminaSampleListLibrary" + "')/items")
-  // // let _requestUrl = currentProps.siteUrl.concat("/_api/web/Lists/GetByTitle('" + "AkuminaSampleListLibrary" + "')/items")
-  // console.log(_requestUrl);
-  // currentProps.spHttpClient.get(_requestUrl, SPHttpClient.configurations.v1)
-  //------- COMMENTED FOR TEST
-  //execute service    
-  let currentWebUrl = "https://accenturemanilapdc.sharepoint.com/sites/siteakuminao365" //test live URL
-  let _requestUrl = currentWebUrl.concat("/_api/web/Lists/GetByTitle('" + "AkuminaSampleListLibrary" + "')/GetItems")
+  //------- COMMENTED FOR TEST 
+  let _requestUrl = currentState.props.siteUrl.concat("/_api/web/Lists/GetByTitle('" + "HeaderNavigation" + "')/GetItems")
   let _camlSingleQuery = "<View><Query></Query></View>"
   const camlQueryPayLoad: any = {
     query: {
@@ -23,6 +15,33 @@ export function renderDataGrid(currentProps, currentState): any {
       ViewXml: _camlSingleQuery
     }
   };
+let postOptions: ISPHttpClientOptions = { headers: { 'odata-version': '3.0' }, body: JSON.stringify(camlQueryPayLoad) };
+currentProps.spHttpClient.post(_requestUrl, SPHttpClient.configurations.v1, postOptions)
+  .then((response: SPHttpClientResponse) => {
+    if (response.ok) {
+      response.json().then((responseJSON) => {
+        if (responseJSON != null && responseJSON.value != null) {
+          responseJSON.value.map((list: IODataList) => {
+            currentState._spItems.push({ Title: list.Title, Description: list.Description, Thumbnail: list.Thumbnail  }); //
+          });
+          currentState.forceUpdate();
+        }
+      })
+    }
+  });
+};
+  export function renderDataGrid(currentProps, currentState): any {
+    currentState._menuItems = [];
+  
+    //------- COMMENTED FOR TEST 
+    let _requestUrl = currentState.props.siteUrl.concat("/_api/web/Lists/GetByTitle('" + "BikeLibrary" + "')/GetItems")
+    let _camlSingleQuery = "<View><Query></Query></View>"
+    const camlQueryPayLoad: any = {
+      query: {
+        __metadata: { type: 'SP.CamlQuery' },
+        ViewXml: _camlSingleQuery
+      }
+    };
   let postOptions: ISPHttpClientOptions = { headers: { 'odata-version': '3.0' }, body: JSON.stringify(camlQueryPayLoad) };
   //currentProps.spHttpClient.post(_requestUrl, SPHttpClient.configurations.v1, postOptions)
   currentProps.spHttpClient.post(_requestUrl, SPHttpClient.configurations.v1, postOptions)
@@ -34,7 +53,6 @@ export function renderDataGrid(currentProps, currentState): any {
               currentState._spItems.push({ Title: list.Title, Description: list.Description, Thumbnail: list.Thumbnail  }); //
             });
             currentState.forceUpdate();
-            //   currentState.setState({ searchId: 0, searchTitle: "", searcDescription: "" });
           }
         })
       }
@@ -43,8 +61,7 @@ export function renderDataGrid(currentProps, currentState): any {
 export function searchSingleListItem(searchText, currentProps, currentEtag, currentState) {
   alert("Searching for " + "'" + searchText + "'");
   //execute service    
-  let currentWebUrl = "https://accenturemanilapdc.sharepoint.com/sites/siteakuminao365" //test live URL
-  let _requestUrl = currentWebUrl.concat("/_api/web/Lists/GetByTitle('" + "AkuminaSampleListLibrary" + "')/GetItems")
+  let _requestUrl = currentState.props.siteUrl.concat("/_api/web/Lists/GetByTitle('" + "BikeLibrary" + "')/GetItems")
   let _camlSingleQuery = "<View><Query><Where><Contains><FieldRef Name='Title' /><Value Type='Text'>" + searchText + "</Value></Contains></Where></Query></View>"
   const camlQueryPayLoad: any = {
     query: {
@@ -62,7 +79,7 @@ export function searchSingleListItem(searchText, currentProps, currentEtag, curr
           if (responseJSON != null && responseJSON.value != null) {
             currentEtag = response.headers.get('ETag');
             responseJSON.value.map((list: IODataList) => {
-              currentState.setState({ searchId: list.Id, searchTitle: list.Title, searcDescription: list.Description });
+              currentState.setState({ searchId: list.Id, searchTitle: list.Title, searcDescription: list.Description, searchThumbnail: list.Thumbnail });
             });
             renderDataGrid(currentProps, currentState);
           }
@@ -77,13 +94,10 @@ export function editSingleListItem(searchText, currentProps, currentEtag, curren
   let _spSearchItems = [];
   alert("Editing for Item #" + "'" + currentState.state.searchId.toString() + "'");
   //execute service
-  let _requestUrl = currentState.props.siteUrl.concat("/_api/web/Lists/GetByTitle('" + "AkuminaSampleListLibrary" + "')/items('" + currentState.searchId + "')")
+  let _requestUrl = currentState.props.siteUrl.concat("/_api/web/Lists/GetByTitle('" + "BikeLibrary" + "')/items('" + currentState.searchId + "')")
   const camlQueryPayLoad: any = {
-    // query: {
-    //   __metadata: { type: 'SP.Data.MyListListItem' },
     'Title': currentState.searchTitle,
     'Description': currentState.searcDescription
-    //}
   };
   let postOptions: ISPHttpClientOptions =
   {
@@ -97,12 +111,11 @@ export function editSingleListItem(searchText, currentProps, currentEtag, curren
     body: JSON.stringify(camlQueryPayLoad)
   };
   currentProps.spHttpClient.post(_requestUrl, SPHttpClient.configurations.v1, postOptions)
-    //currentState.props.spHttpClient.post(_requestUrl, SPHttpClient.configurations.v1, postOptions)
     .then((response: SPHttpClientResponse) => {
       if (response.ok) {
         renderDataGrid(currentProps, currentState);
-        currentState.setState({ searchId: 0, hideDialog: true, searchTitle: "", searcDescription: "", showSuccessMSGBR: true });
-      } else { currentState.setState({ searchId: 0, hideDialog: true, searchTitle: "", searcDescription: "", showErrorMSGBR: true }); }
+        currentState.setState({ searchId: 0, hideDialog: true, searchTitle: "", searcDescription: "", searchThumbnail: "" , showSuccessMSGBR: true });
+      } else { currentState.setState({ searchId: 0, hideDialog: true, searchTitle: "", searcDescription: "", searchThumbnail: "" , showErrorMSGBR: true }); }
     });
 };
 export function addSingleListItem(searchText, currentProps, currentEtag, currentState) {
@@ -112,7 +125,7 @@ export function addSingleListItem(searchText, currentProps, currentEtag, current
   let _spSearchItems = [];
   alert("Add for Item #" + "'" + currentState.state.searchId.toString() + "'");
   //execute service
-  let _requestUrl = currentState.props.siteUrl.concat("/_api/web/Lists/GetByTitle('" + "AkuminaSampleListLibrary" + "')/items")
+  let _requestUrl = currentState.props.siteUrl.concat("/_api/web/Lists/GetByTitle('" + "BikeLibrary" + "')/items")
   const camlQueryPayLoad: any = {
     // query: {
     //  __metadata: { type: 'SP.Data.MyListListItem' },
@@ -132,12 +145,11 @@ export function addSingleListItem(searchText, currentProps, currentEtag, current
     body: JSON.stringify(camlQueryPayLoad)
   };
   currentProps.spHttpClient.post(_requestUrl, SPHttpClient.configurations.v1, postOptions)
-    //currentState.props.spHttpClient.post(_requestUrl, SPHttpClient.configurations.v1, postOptions)
     .then((response: SPHttpClientResponse) => {
       if (response.ok) {
         renderDataGrid(currentProps, currentState);
-        currentState.setState({ searchId: 0, hideDialog: true, searchTitle: "", searcDescription: "", showSuccessMSGBR: true });
-      } else { currentState.setState({ searchId: 0, hideDialog: true, searchTitle: "", searcDescription: "", showErrorMSGBR: true }); }
+        currentState.setState({ searchId: 0, hideDialog: true, searchTitle: "", searcDescription: "", searchThumbnail: "" , showSuccessMSGBR: true });
+      } else { currentState.setState({ searchId: 0, hideDialog: true, searchTitle: "", searcDescription: "", searchThumbnail: "" , showErrorMSGBR: true }); }
     });
 };
 export function deleteSingleListItem(searchText, currentProps, currentEtag, currentState) {
@@ -147,7 +159,7 @@ export function deleteSingleListItem(searchText, currentProps, currentEtag, curr
   let _spSearchItems = [];
   alert("Deleting for Item #" + "'" + currentState.searchId.toString() + "'");
   //execute service
-  let _requestUrl = currentState.props.siteUrl.concat("/_api/web/Lists/GetByTitle('" + "AkuminaSampleListLibrary" + "')/items('" + currentState.searchId + "')")
+  let _requestUrl = currentState.props.siteUrl.concat("/_api/web/Lists/GetByTitle('" + "BikeLibrary" + "')/items('" + currentState.searchId + "')")
   const camlQueryPayLoad: any = {
     'Title': currentState.searchTitle,
     'Description': currentState.searcDescription
@@ -165,12 +177,11 @@ export function deleteSingleListItem(searchText, currentProps, currentEtag, curr
     body: JSON.stringify(camlQueryPayLoad)
   };
   currentProps.spHttpClient.post(_requestUrl, SPHttpClient.configurations.v1, postOptions)
-    //currentState.props.spHttpClient.post(_requestUrl, SPHttpClient.configurations.v1, postOptions)
     .then((response: SPHttpClientResponse) => {
       if (response.ok) {
         renderDataGrid(currentProps, currentState);
-        currentState.setState({ searchId: 0, hideDialog: true, searchTitle: "", searcDescription: "", showSuccessMSGBR: true });
-      } else { currentState.setState({ searchId: 0, hideDialog: true, searchTitle: "", searcDescription: "", showErrorMSGBR: true }); }
+        currentState.setState({ searchId: 0, hideDialog: true, searchTitle: "", searcDescription: "", searchThumbnail: "" ,showSuccessMSGBR: true });
+      } else { currentState.setState({ searchId: 0, hideDialog: true, searchTitle: "", searcDescription: "", searchThumbnail: "" , showErrorMSGBR: true }); }
     });
 };
 export class o365SP_CommonService {

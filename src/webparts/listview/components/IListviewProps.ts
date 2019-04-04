@@ -7,5 +7,6 @@ export interface IListviewProps {
   listName: string;
   searchTitle: string;
   searcDescription: string;
+  searchThumbnail: string;
   spHttpClient: SPHttpClient;
 }

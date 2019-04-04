@@ -6,6 +6,7 @@ import {
 import { Dialog } from '@microsoft/sp-dialog';
 
 import * as strings from 'HeaderfooterApplicationCustomizerStrings';
+import { SPHttpClient, SPHttpClientResponse, ISPHttpClientOptions } from '@microsoft/sp-http';
 
 const LOG_SOURCE: string = 'HeaderfooterApplicationCustomizer';
 import { escape } from '@microsoft/sp-lodash-subset';
@@ -23,10 +24,18 @@ require('bootstrap');
 require('popper.js');
 
 import onStyle from './HeaderfooterApplicationCustomizer.module.scss';
+//calling common service
+import { renderMenuNav } from '../../services/o365SP_CommonService';
+
 export interface IHeaderfooterApplicationCustomizerProperties {
   testMessage: string;
+  spHttpClient: SPHttpClient;
+  siteURL: string;
 }
-
+export interface HeaderfooterProps {
+  siteUrl: string;
+  spHttpClient: SPHttpClient;
+}
 /** A Custom Action which can be run during execution of a Client Side Application */
 export default class HeaderfooterApplicationCustomizer
   extends BaseApplicationCustomizer<IHeaderfooterApplicationCustomizerProperties> {
@@ -36,9 +45,10 @@ export default class HeaderfooterApplicationCustomizer
     let cssURL = "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css";
     SPComponentLoader.loadCss(cssURL);
 
-    //hide sp components
-    // var suiteBar = document.getElementById('SuiteNavPlaceHolder');
-    // suiteBar.setAttribute("style", "display: none !important");
+    // this.properties.siteURL = this.context.pageContext.web.absoluteUrl;
+    // this.properties.spHttpClient = this.context.spHttpClient;
+    // renderMenuNav(this.properties, this);
+
     $( "#SuiteNavPlaceHolder" ).hide(); //hide site nav
     $( "div[class^='mainRow-']" ).hide(); //hide root bar
     $( "div[class^='feedback_']" ).hide(); //hide feedback section
@@ -60,20 +70,19 @@ export default class HeaderfooterApplicationCustomizer
                     <img src=${escape(log_STR)} class=${onStyle.iconImgsHeader}></img>
                     </div>
                     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                    <a class="navbar-brand" href="#">Navbar</a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                       <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                      <ul class="navbar-nav">
+                      <ul class="nav nav-pills">
                         <li class="nav-item active">
-                          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                          <a class="nav-link active" href="/sites/ReactSPFX">Home</a>
                         </li>
                         <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Bikes
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink1">
+                        <div class="dropdown-menu">
                           <a class="dropdown-item" href="#">Fixed Gears</a>
                           <a class="dropdown-item" href="#">Single Speed SSCX</a>
                           <a class="dropdown-item" href="#">Road</a>
@@ -82,10 +91,10 @@ export default class HeaderfooterApplicationCustomizer
                         </div>
                         </li>
                         <li class="nav-item dropdown">
-                          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Bike Components
                           </a>
-                          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
+                          <div class="dropdown-menu">
                             <a class="dropdown-item" href="#">Framesets</a>
                             <a class="dropdown-item" href="#">Wheelsets</a>
                             <a class="dropdown-item" href="#">Groupsets</a>
@@ -99,6 +108,9 @@ export default class HeaderfooterApplicationCustomizer
                       <li class="nav-item">
                         <a class="nav-link" href="/sites/ReactSPFX/_layouts/15/settings.aspx">Site Settings</a>
                       </li>
+                      <li class="nav-item">
+                      <a class="nav-link" href="/sites/ReactSPFX/_layouts/15/settings.aspx">About</a>
+                    </li>
                       </ul>
                     </div>
                   </nav>
@@ -121,4 +133,10 @@ export default class HeaderfooterApplicationCustomizer
     }
     return Promise.resolve();
   }
+  private _menuItems: {
+    FieldName: string,
+    ParentField: string,
+    Url: string,
+    IsExpanded: string
+  }[] = [];
 }

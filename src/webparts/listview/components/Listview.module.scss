@@ -15,7 +15,9 @@
     background-color: $ms-color-themeDark;
     padding: 20px;
   }
-
+  .ms-Dialog-main {
+    max-width: 600px; /* Your maximum width here */
+  }
   .column {
     @include ms-Grid-col;
     @include ms-lg10;

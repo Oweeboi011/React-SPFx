@@ -34,6 +34,7 @@ export interface listviewtState {
   showErrorMSGBR: boolean;
   searchTitle: string;
   searcDescription: string;
+  searchThumbnail: string;
   searchId: number,
   errorMessage: string,
   successMessage: string
@@ -51,6 +52,7 @@ export default class Listview extends React.Component<IListviewProps, {}> {
       hideDialog: true,
       searchTitle: "",
       searcDescription: "",
+      searchThumbnail: "",
       searchId: 0,
       errorMessage: "",
       successMessage: "",
@@ -79,7 +81,7 @@ export default class Listview extends React.Component<IListviewProps, {}> {
             disabled={false}
             checked={false}
             onClick={this._showCRUDDialog} >
-            Add new Item on the target list.
+            Add/Update Bikes.
               </ActionButton>
         </div>
 
@@ -93,7 +95,7 @@ export default class Listview extends React.Component<IListviewProps, {}> {
           onDismiss={this._closeCRUDDialog}
           dialogContentProps={{
             type: DialogType.normal,
-            title: 'List Item Manager',
+            title: 'Bike Record Manager',
             subText: 'This dialog will be help you on inserting list item in a particular SharePoint List'
           }}
           modalProps={{
@@ -110,10 +112,12 @@ export default class Listview extends React.Component<IListviewProps, {}> {
             onBlur={() => console.log('onBlur called')}
             onChange={() => console.log('onChange called')}
           />
-          <h2>List Item Properties:</h2>
-          <TextField label="Item Id" value={this.state.searchId.toString()} />
-          <TextField label="Item Title" value={this.state.searchTitle} onBlur={e => this._onChange_searchTitle(e)} />
-          <TextField label="Item Description" value={this.state.searcDescription} multiline autoAdjustHeight onBlur={e => this._onChange_searcDescription(e)} />
+          <h2>Details:</h2>
+          {/* <TextField label="Item Id" value={this.state.searchId.toString()} /> */}
+          <TextField label="Bike Name" value={this.state.searchTitle} onBlur={e => this._onChange_searchTitle(e)} />
+          <Image className={mainStyle.itemImage} src={this.state.searchThumbnail} width={100} height={100} imageFit={ImageFit.cover} />
+          <TextField label="Bike Thumbnail Url" value={this.state.searchThumbnail} />
+          <TextField label="Bike Description" value={this.state.searcDescription} multiline autoAdjustHeight onBlur={e => this._onChange_searcDescription(e)} />
           <DialogFooter>
             {/* <PrimaryButton onClick={this._closeCRUDDialog} text="Add New" /> */}
             <DefaultButton

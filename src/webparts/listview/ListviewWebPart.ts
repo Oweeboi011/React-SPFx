@@ -19,6 +19,7 @@ export interface IListviewWebPartProps {
   listName: string;
   searchTitle: string;
   searcDescription: string;
+  searchThumbnail: string;
   spHttpClient: SPHttpClient;
 }
 
@@ -34,6 +35,7 @@ export default class ListviewWebPart extends BaseClientSideWebPart<IListviewWebP
         listName: this.properties.listName,
         searchTitle: "",
         searcDescription: "",
+        searchThumbnail: "",
         spHttpClient: this.context.spHttpClient
       }
     );
