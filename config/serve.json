@@ -2,30 +2,37 @@
   "$schema": "https://developer.microsoft.com/json-schemas/core-build/serve.schema.json",
   "port": 4321,
   "https": true,
-  //"initialPage": "https://localhost:5432/workbench",
-  "api": {
-    "port": 5432,
-    "entryPath": "node_modules/@microsoft/sp-webpart-workbench/lib/api/"
-  },
   "serveConfigurations": {
     "default": {
-      "pageUrl": "https://accenturemanilapdc.sharepoint.com/sites/ReactSPFX/SitePages/Home.aspx",//"https://contoso.sharepoint.com/sites/mySite/SitePages/myPage.aspx",
-      "customActions": {
-        "1d0f9fa8-57a6-481c-bc63-0c298d8302c0": {
-          "location": "ClientSideExtension.ApplicationCustomizer",
+      "pageUrl": "https://accenturemanilapdc.sharepoint.com/sites/ReactSPFX/SitePages/Home.aspx",
+      "fieldCustomizers": {
+        "InternalFieldName": {
+          "id": "a09c9da0-88f4-4118-89e5-f3e19b9fc721",
           "properties": {
-            "testMessage": "Test message"
+            "sampleText": "Value"
           }
         }
       }
     },
-    "headerfooter": {
+    "customFields": {
+      "pageUrl": "https://accenturemanilapdc.sharepoint.com/sites/ReactSPFX/SitePages/Home.aspx",
+      "fieldCustomizers": {
+        "InternalFieldName": {
+          "id": "a09c9da0-88f4-4118-89e5-f3e19b9fc721",
+          "properties": {
+            "sampleText": "Value"
+          }
+        }
+      }
+    },
+    "listContextMenu": {
       "pageUrl": "https://accenturemanilapdc.sharepoint.com/sites/ReactSPFX/SitePages/Home.aspx",
       "customActions": {
-        "1d0f9fa8-57a6-481c-bc63-0c298d8302c0": {
-          "location": "ClientSideExtension.ApplicationCustomizer",
+        "4a465ca6-4cc5-436d-8ab6-36e1f0417b28": {
+          "location": "ClientSideExtension.ListViewCommandSet.CommandBar",
           "properties": {
-            "testMessage": "Test message"
+            "sampleTextOne": "One item is selected in the list",
+            "sampleTextTwo": "This command is always visible."
           }
         }
       }

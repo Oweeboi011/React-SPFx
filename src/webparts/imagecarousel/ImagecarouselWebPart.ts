@@ -10,12 +10,26 @@ import {
 import * as strings from 'ImagecarouselWebPartStrings';
 import Imagecarousel from './components/Imagecarousel';
 import { IImagecarouselProps } from './components/IImagecarouselProps';
+import { SPHttpClient, SPHttpClientResponse, ISPHttpClientOptions } from '@microsoft/sp-http';
 
 require('jquery');
 require('bootstrap');
 
+export interface imageCarouselState {
+  searchTitle: string;
+  searcDescription: string;
+  searchThumbnail: string;
+}
+
 export interface IImagecarouselWebPartProps {
   description: string;
+  name: string;
+  siteUrl: string;
+  listName: string;
+  searchTitle: string;
+  searcDescription: string;
+  searchThumbnail: string;
+  spHttpClient: SPHttpClient;
 }
 
 export default class ImagecarouselWebPart extends BaseClientSideWebPart<IImagecarouselWebPartProps> {
@@ -24,7 +38,14 @@ export default class ImagecarouselWebPart extends BaseClientSideWebPart<IImageca
     const element: React.ReactElement<IImagecarouselProps > = React.createElement(
       Imagecarousel,
       {
-        description: this.properties.description
+        description: '',
+        name: this.properties.name,
+        siteUrl: this.context.pageContext.web.absoluteUrl,
+        listName: this.properties.listName,
+        searchTitle: "",
+        searcDescription: "",
+        searchThumbnail: "",
+        spHttpClient: this.context.spHttpClient
       }
     );
 

@@ -41,33 +41,51 @@
           "manifest": "./src/extensions/headerfooter/HeaderfooterApplicationCustomizer.manifest.json"
         }
       ]
+    },
+    "custom-fields-field-customizer": {
+      "components": [
+        {
+          "entrypoint": "./lib/extensions/customFields/CustomFieldsFieldCustomizer.js",
+          "manifest": "./src/extensions/customFields/CustomFieldsFieldCustomizer.manifest.json"
+        }
+      ]
+    },
+    "list-context-menu-command-set": {
+      "components": [
+        {
+          "entrypoint": "./lib/extensions/listContextMenu/ListContextMenuCommandSet.js",
+          "manifest": "./src/extensions/listContextMenu/ListContextMenuCommandSet.manifest.json"
+        }
+      ]
     }
   },
   "externals": {
     "jquery": {
-      "path": "https://code.jquery.com/jquery-3.2.1.slim.min.js", //"./src/scripts/jquery.min.js",
+      "path": "https://code.jquery.com/jquery-3.2.1.slim.min.js",
       "globalName": "jquery"
     },
     "bootstrap": {
-      "path": "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js",//./src/scripts/bootstrap.min.js",
+      "path": "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js",
       "globalName": "bootstrap",
       "globalDependencies": [
         "jquery"
       ]
     },
     "popper.js": {
-      "path": "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.4/umd/popper.min.js",//./src/scripts/bootstrap.min.js",
+      "path": "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.4/umd/popper.min.js",
       "globalName": "popper.js",
       "globalDependencies": [
         "jquery"
       ]
     }
   },
-    "localizedResources": {
+  "localizedResources": {
     "MenuwebpartWebPartStrings": "lib/webparts/menuwebpart/loc/{locale}.js",
     "HeaderfooterApplicationCustomizerStrings": "lib/extensions/headerfooter/loc/{locale}.js",
     "ListviewWebPartStrings": "lib/webparts/listview/loc/{locale}.js",
     "ImagecarouselWebPartStrings": "lib/webparts/imagecarousel/loc/{locale}.js",
-    "SamplewebpartWebPartStrings": "lib/webparts/samplewebpart/loc/{locale}.js"
+    "SamplewebpartWebPartStrings": "lib/webparts/samplewebpart/loc/{locale}.js",
+    "CustomFieldsFieldCustomizerStrings": "lib/extensions/customFields/loc/{locale}.js",
+    "ListContextMenuCommandSetStrings": "lib/extensions/listContextMenu/loc/{locale}.js"
   }
 }

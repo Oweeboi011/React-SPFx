@@ -1,14 +1,53 @@
 import { SPHttpClient, SPHttpClientResponse, ISPHttpClientOptions } from '@microsoft/sp-http';
 import { Context } from 'react';
 import { WebPartContext } from '@microsoft/sp-webpart-base';
-import { IODataList } from '@microsoft/sp-odata-types';
+import { IODataList, IODataListItem } from '@microsoft/sp-odata-types';
 const log_STR: string = "https://accenturemanilapdc.sharepoint.com/sites/ReactSPFX/SiteAssets//oweebearApps.png";
 const react_STR: string = "https://accenturemanilapdc.sharepoint.com/sites/SiteAssets/ReactSPFX/react.png";
 import onStyle from '../extensions/headerfooter/HeaderfooterApplicationCustomizer.module.scss';
 import { escape } from '@microsoft/sp-lodash-subset';
 import $ from '../scripts/jquery.min.js';
 
+require('jquery');
+require('bootstrap');
+require('popper.js');
 
+
+export function renderImageCarousel(currentProps, currentState): any {
+  currentState._imageItems = [];
+
+  //------- COMMENTED FOR TEST 
+  let _requestUrl = currentState.props.siteUrl.concat("/_api/web/Lists/GetByTitle('" + "ImageCarousel" + "')/GetItems")
+  let _camlSingleQuery = 
+                      `<View><Query></Query> <ViewFields>
+                      <FieldRef Name="Name"/>
+                      <FieldRef Name="Title"/>
+                      <FieldRef Name="Description"/>
+                      <FieldRef Name="ServerRelativeUrl"/>
+                      </ViewFields></View>`;
+  const camlQueryPayLoad: any = {
+    query: {
+      __metadata: { type: 'SP.CamlQuery' },
+      ViewXml: _camlSingleQuery
+    }
+  };
+let postOptions: ISPHttpClientOptions = { headers: { 'odata-version': '3.0' }, body: JSON.stringify(camlQueryPayLoad) };
+//currentProps.spHttpClient.post(_requestUrl, SPHttpClient.configurations.v1, postOptions)
+currentProps.spHttpClient.post(_requestUrl, SPHttpClient.configurations.v1, postOptions)
+  .then((response: SPHttpClientResponse) => {
+    if (response.ok) {
+      response.json().then((responseJSON) => {
+        if (responseJSON != null && responseJSON.value != null) {
+          responseJSON.value.map((list: IODataList) => {
+            currentState._imageItems.push({ Title: list.Title, Description: list.Description, Thumbnail: list.Title  }); //
+          });
+        currentState.forceUpdate();
+         
+        }
+      })
+    }
+  });
+};
 export function renderMenuNav(currentProps, currentState, topNav): any {
   currentState._menuItems = [];
 
@@ -34,13 +73,13 @@ currentProps.spHttpClient.post(_requestUrl, SPHttpClient.configurations.v1, post
           let newDiv = '<ul class="nav nav-pills">';
 
           var filterArr = currentState._menuItems.filter(function (e) {
-            return (e.Url === '#');
+            return (e.ParentField === 'N/A' || e.ParentField === 'Parent');
           });
           var arrayLength = filterArr.length;
           for (var i = 0; i < arrayLength; i++) {
             if(filterArr[i].ParentField == 'Parent'){
               newDiv +=  '<li class="nav-item dropdown">' + '<a id=' + '"id_' + filterArr[i].FieldName.trim().replace(' ','') + '" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' + filterArr[i].FieldName.trim() + '</a>';
-              newDiv += '<div class="dropdown-menu aria-labelledby=' + '"id_' + filterArr[i].FieldName.trim().replace(' ','') + '">';        
+              newDiv += '<div class="dropdown-menu bg-secondary" aria-labelledby=' + '"id_' + filterArr[i].FieldName.trim().replace(' ','') + '">';        
               var filterChildArr = currentState._menuItems.filter(function (e) {
                 return (e.ParentField === filterArr[i].FieldName);
               });
@@ -48,7 +87,7 @@ currentProps.spHttpClient.post(_requestUrl, SPHttpClient.configurations.v1, post
               var arrayChildLength = filterChildArr.length;
               for (var xi = 0; xi < arrayChildLength; xi++) {
                 console.log('Add ' + filterChildArr[xi].FieldName.trim() + ' in ' +  filterArr[i].FieldName + ' | Parent: ' + filterArr[i].ParentField);
-                newDiv += '<a class="dropdown-item" href=' + filterChildArr[xi].Url + '>' + filterChildArr[xi].FieldName.trim() + '</a><div class="dropdown-divider"></div>';
+                newDiv += '<a class="dropdown-item p-3" href=' + filterChildArr[xi].Url + '><h5>' + filterChildArr[xi].FieldName.trim() + '</h5></a><div class="dropdown-divider"></div>';
               }     
               newDiv +=  `</div></li>`;
             }

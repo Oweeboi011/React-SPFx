@@ -10,13 +10,34 @@ import { SPComponentLoader } from '@microsoft/sp-loader';
 require('jquery');
 require('bootstrap');
 require('popper.js');
+//calling common service
+import { renderImageCarousel } from '../../../services/o365SP_CommonService';
 
+export interface imageCarouselState {
+  searchTitle: string;
+  searcDescription: string;
+  searchThumbnail: string;
+}
 export default class Imagecarousel extends React.Component<IImagecarouselProps, {}> {
   constructor(props: IImagecarouselProps) {
     super(props);
     let cssURL = "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css";
     SPComponentLoader.loadCss(cssURL);
+    renderImageCarousel(this.props, this);
  } 
+
+   //update state
+   public state: imageCarouselState = {
+    searchTitle: "",
+    searcDescription: "",
+    searchThumbnail: ""
+  };
+  private _menuItems: {
+    Title: string,
+    Description: string,
+    Thumbnail: string
+  }[] = [];
+
   public render(): JSX.Element {
     return (
       <div>
