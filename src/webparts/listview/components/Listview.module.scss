@@ -16,7 +16,11 @@
     padding: 20px;
   }
   .ms-Dialog-main {
-    max-width: 600px; /* Your maximum width here */
+    max-width: 700px; /* Your maximum width here */
+  }
+  .modal-ku {
+    width: 750px;
+    margin: auto;
   }
   .column {
     @include ms-Grid-col;

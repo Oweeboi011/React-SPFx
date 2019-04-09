@@ -1,13 +1,56 @@
 @import '~@microsoft/sp-office-ui-fabric-core/dist/sass/SPFabricCore.scss';
 @import url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css');
 
+
+.modal-backdrop {
+  position: relative;
+  
+}
+.modal-dialog {
+  margin: 2px auto;
+  z-index: 1100 !important;
+}
+
 .imagecarousel {
+  width: 700px !important;
+
   .container {
-    width: auto;
-    height: 800px;
+    width: 700px !important;
     margin: 0px auto;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
   }
+
+
+  @media (max-width: 700px) {
+    .carousel {
+      width:auto;
+      height:auto;
+    }
+  } 
+
+  .carousel-control-prev-icon,
+.carousel-control-next-icon {
+  height: 100px;
+  width: 100px;
+  outline: black;
+  background-size: 100%, 100%;
+  border-radius: 50%;
+  border: 1px solid black;
+  background-image: none;
+}
+
+.carousel-control-next-icon:after
+{
+  content: '>';
+  font-size: 55px;
+  color: red;
+}
+
+.carousel-control-prev-icon:after {
+  content: '<';
+  font-size: 55px;
+  color: red;
+}
 
   .row {
     @include ms-Grid-row;

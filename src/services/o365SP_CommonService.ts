@@ -14,17 +14,12 @@ require('popper.js');
 
 
 export function renderImageCarousel(currentProps, currentState): any {
-  currentState._imageItems = [];
+  currentState._imgItems = [];
 
   //------- COMMENTED FOR TEST 
-  let _requestUrl = currentState.props.siteUrl.concat("/_api/web/Lists/GetByTitle('" + "ImageCarousel" + "')/GetItems")
+  let _requestUrl = currentState.props.siteUrl.concat("/_api/web/Lists/GetByTitle('" + "ImageCarousel" + "')/GetItems?$select=Title,Description,FileRef")
   let _camlSingleQuery = 
-                      `<View><Query></Query> <ViewFields>
-                      <FieldRef Name="Name"/>
-                      <FieldRef Name="Title"/>
-                      <FieldRef Name="Description"/>
-                      <FieldRef Name="ServerRelativeUrl"/>
-                      </ViewFields></View>`;
+                      `<View><Query></Query></View>`;
   const camlQueryPayLoad: any = {
     query: {
       __metadata: { type: 'SP.CamlQuery' },
@@ -39,7 +34,7 @@ currentProps.spHttpClient.post(_requestUrl, SPHttpClient.configurations.v1, post
       response.json().then((responseJSON) => {
         if (responseJSON != null && responseJSON.value != null) {
           responseJSON.value.map((list: IODataList) => {
-            currentState._imageItems.push({ Title: list.Title, Description: list.Description, Thumbnail: list.Title  }); //
+            currentState._imgItems.push({ Title: list.Title, Description: list.Description, Thumbnail: list.FileRef  }); //
           });
         currentState.forceUpdate();
          

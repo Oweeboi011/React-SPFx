@@ -77,6 +77,20 @@
       "globalDependencies": [
         "jquery"
       ]
+    },
+    // "react.production.js": {
+    //   "path": "https://unpkg.com/react/umd/react.production.js",
+    //   "globalName": "react.production.js",
+    //   "globalDependencies": [
+    //     "jquery"
+    //   ]
+    // },
+    "react-bootstrap.js": {
+      "path": "https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js",
+      "globalName": "react-bootstrap.js",
+      "globalDependencies": [
+        "jquery"
+      ]
     }
   },
   "localizedResources": {

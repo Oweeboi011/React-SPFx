@@ -102,7 +102,7 @@ export default class Listview extends React.Component<IListviewProps, {}> {
             titleAriaId: this._labelId,
             subtitleAriaId: this._subTextId,
             isBlocking: false,
-            containerClassName: 'ms-dialogMainOverride'
+            containerClassName: 'ms-dialogMainOverride modal-lg'
           }}
         >
           <SearchBox
@@ -125,7 +125,7 @@ export default class Listview extends React.Component<IListviewProps, {}> {
               data-automation-id="test"
               disabled={false}
               checked={false}
-              text="New Item"
+              text="New Bike"
               onClick={(ev: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
                 addSingleListItem(this.state.searchTitle, this.props, etag, this);
 
@@ -139,7 +139,7 @@ export default class Listview extends React.Component<IListviewProps, {}> {
                 items: [
                   {
                     key: 'emailMessage',
-                    name: 'Edit Item',
+                    name: 'Edit Bike',
                     iconProps: { iconName: 'EditNote' },
                     onClick: (ev: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
                       editSingleListItem("", this.props, etag, this);
@@ -148,7 +148,7 @@ export default class Listview extends React.Component<IListviewProps, {}> {
                   },
                   {
                     key: 'calendarEvent',
-                    name: 'Delete Item',
+                    name: 'Delete Bike',
                     iconProps: { iconName: 'Delete' },
                     onClick: (ev: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
                       alert('Link clicked');
