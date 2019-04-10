@@ -15,9 +15,9 @@
       }
     },
     "customFields": {
-      "pageUrl": "https://accenturemanilapdc.sharepoint.com/sites/ReactSPFX/SitePages/Home.aspx",
+      "pageUrl": "https://accenturemanilapdc.sharepoint.com/sites/ReactSPFX/Lists/BikeLibrary/AllItems.aspx",
       "fieldCustomizers": {
-        "InternalFieldName": {
+        "BikeSerialNumber": {
           "id": "a09c9da0-88f4-4118-89e5-f3e19b9fc721",
           "properties": {
             "sampleText": "Value"

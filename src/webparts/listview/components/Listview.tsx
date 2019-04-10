@@ -5,18 +5,22 @@ import { escape } from '@microsoft/sp-lodash-subset';
 
 //fabric UI office
 import { getRTL } from 'office-ui-fabric-react/lib/Utilities';
+import { HoverCard, IExpandingCardProps } from 'office-ui-fabric-react/lib/HoverCard';
 import { PrimaryButton, ActionButton, IButtonProps, DefaultButton } from 'office-ui-fabric-react/lib/Button';
 import { IContextualMenuProps, ContextualMenu } from 'office-ui-fabric-react/lib/ContextualMenu';
-import { Label } from 'office-ui-fabric-react/lib/Label';
 import { TextField, MaskedTextField } from 'office-ui-fabric-react/lib/TextField';
 import { SearchBox } from 'office-ui-fabric-react/lib/SearchBox';
 import { Dialog, DialogType, DialogFooter, DialogBase, DialogContent } from 'office-ui-fabric-react/lib/Dialog';
+import { Fabric } from 'office-ui-fabric-react/lib/Fabric';
 import { Image, ImageFit } from 'office-ui-fabric-react/lib/Image';
+import { Link } from 'office-ui-fabric-react/lib/Link';
+import { DetailsList } from 'office-ui-fabric-react/lib/DetailsList';
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
 import { FocusZone, FocusZoneDirection } from 'office-ui-fabric-react/lib/FocusZone';
 import { List } from 'office-ui-fabric-react/lib/List';
 import { getId } from 'office-ui-fabric-react/lib/Utilities';
 import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
+import { getTheme, FontWeights, mergeStyleSets } from 'office-ui-fabric-react/lib/Styling';
 
 //force office fabric scss
 import { initializeIcons } from 'office-ui-fabric-react/lib/Icons';
@@ -27,8 +31,27 @@ import { o365SP_CommonService, renderDataGrid, searchSingleListItem, editSingleL
 
 const log = (text: string): (() => void) => (): void => console.log(text);
 let etag: string = undefined;
-
+const classNames = mergeStyleSets({
+  compactCard: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100%'
+  },
+  expandedCard: {
+    padding: '16px 24px'
+  },
+  item: {
+    selectors: {
+      '&:hover': {
+        textDecoration: 'underline',
+        cursor: 'pointer'
+      }
+    }
+  }
+});
 export interface listviewtState {
+  hideCallout: boolean;
   hideDialog: boolean;
   showSuccessMSGBR: boolean;
   showErrorMSGBR: boolean;
@@ -37,32 +60,40 @@ export interface listviewtState {
   searchThumbnail: string;
   searchId: number,
   errorMessage: string,
-  successMessage: string
+  successMessage: string,
+  targetElement: any
 }
 
 export default class Listview extends React.Component<IListviewProps, {}> {
   private _selection: Selection;
   constructor(props: IListviewProps) {
     super(props);
+    this._onRenderCell = this._onRenderCell.bind(this);
     renderDataGrid(this.props, this);
   }
 
-    //update state
-    public state: listviewtState = {
-      hideDialog: true,
-      searchTitle: "",
-      searcDescription: "",
-      searchThumbnail: "",
-      searchId: 0,
-      errorMessage: "",
-      successMessage: "",
-      showSuccessMSGBR: false,
-      showErrorMSGBR: false
-    };
-    private _labelId: string = getId('dialogLabel');
-    private _subTextId: string = getId('subTextLabel');
-
+  //update state
+  public state: listviewtState = {
+    hideCallout: false,
+    hideDialog: true,
+    searchTitle: "",
+    searcDescription: "",
+    searchThumbnail: "",
+    searchId: 0,
+    errorMessage: "",
+    successMessage: "",
+    showSuccessMSGBR: false,
+    showErrorMSGBR: false,
+    targetElement: []
+  };
+  private _labelId: string = getId('dialogLabel');
+  private _subTextId: string = getId('subTextLabel');
+  private _calloutlabelId: string = getId('callout-label');
+  private _descriptionId: string = getId('callout-description');
+  //placeholder for callout
+  private _menuButtonElement = React.createRef<HTMLDivElement>();
   public render(): JSX.Element {
+
     return (
       <div className="listview">
         <div>
@@ -85,10 +116,19 @@ export default class Listview extends React.Component<IListviewProps, {}> {
               </ActionButton>
         </div>
 
+        <div ref={this._menuButtonElement}></div>
         <FocusZone direction={FocusZoneDirection.vertical}>
           <List items={this._spItems} onRenderCell={this._onRenderCell} />
         </FocusZone>
-
+       
+        {/* CALLOUT: CRUD List Item */}
+        <Fabric>
+        <p>
+          Hover over the <i>location</i> cell of a row item to see the card or use the keyboard to navigate to it.
+        </p>
+        <p>When using the keyboard to tab to it, the card will open but navigation inside of it will not be available.</p>
+        {/* <DetailsList setKey="hoverSet" items={this._items} columns={this._columns} onRenderItemColumn={this._onRenderItemColumn} /> */}
+      </Fabric>
         {/* DIALOG: CRUD List Item */}
         <Dialog
           hidden={this.state.hideDialog}
@@ -178,22 +218,53 @@ export default class Listview extends React.Component<IListviewProps, {}> {
     return <ContextualMenu {...menuProps} />;
   };
   private _onRenderCell(item: any, index: number | undefined): JSX.Element {
+    const expandingCardProps: IExpandingCardProps  = {
+      onRenderCompactCard: this._onRenderCompactCard,
+      onRenderExpandedCard: this._onRenderExpandedCard,
+      renderData: item
+    };
     return (
+
       // <div className={FabricUIModule1_.defaultFabricv1}>
       <div className={mainStyle.listview}>
         <div className={mainStyle.itemCell} data-is-focusable={true}>
           <Image className={mainStyle.itemImage} src={item.Thumbnail} width={100} height={100} imageFit={ImageFit.cover} />
           <div className={mainStyle.itemContent}>
-            <div className={mainStyle.itemName}>{item.Title}</div>
-            {/* <div className={mainStyle.itemIndex}>{`Item ${index}`}</div> */}
-            <div className={mainStyle.itemContent}>{item.Description}</div>
+          <HoverCard expandingCardProps={expandingCardProps} instantOpenOnClick={true}>
+          <div className={mainStyle.itemName}>{item.Title}</div>
+              <div className={mainStyle.itemContent}>{item.Description}</div>
+        </HoverCard>
+            {/* <a onClick={e => this._openCallout(item, item.Title, item.Description)}>
+              <div className={mainStyle.itemName}>{item.Title}</div>
+              <div className={mainStyle.itemContent}>{item.Description}</div>
+            </a> */}
           </div>
           <Icon className={mainStyle.chevron} iconName={getRTL() ? 'ChevronLeft' : 'ChevronRight'} />
         </div>
       </div>
 
     );
+
+
+
   }
+  private _onRenderCompactCard = (item: any): JSX.Element => {
+    return (
+      <div className={classNames.compactCard}>
+        <Image className={mainStyle.itemImage} src={item.Thumbnail} width={200} height={200} imageFit={ImageFit.cover} />
+      </div>
+    );
+  };
+
+  private _onRenderExpandedCard = (item: any): JSX.Element => {
+    return (
+      <div className={classNames.expandedCard}>
+        <p className="ms-fontSize-xxl ms-fontColor-neutralLighterAlt">{item.Title}</p>
+        <p className="ms-font-m-plus ms-fontColor-neutralLight">{item.Description}</p>
+      </div>
+    );
+  };
+
   private _showCRUDDialog = (): void => {
     this.setState({ hideDialog: false, searchTitle: "", searcDescription: "" });
   };
