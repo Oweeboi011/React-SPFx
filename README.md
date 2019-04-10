@@ -1,26 +1,45 @@
-## react-spfx
+# OweeBear Apps -  React SPFX
+[![Build Status](https://github.com/Oweeboi011/React-SPFx/blob/master/src/images/oweebearApps.png?raw=true)](https://github.com/Oweeboi011)
 
-This is where you include your WebPart documentation.
+React SPFX is a SharePoint Framework testing material that uses both UI Fabric and Bootstrap 4 via React.
+  - Suitable only for SharePoint Online
+  - React 
 
-### Building the code
+![Image Screenshot](https://github.com/Oweeboi011/React-SPFx/blob/master/src/images/screenshot.jpg?raw=true)
+### Tech and plug-ins
 
-```bash
-git clone the repo
-npm i
-npm i -g gulp
-gulp
+SPFX React uses a number of open source projects to work properly:
+
+* REACT - https://reactjs.org/
+* NODEJS - https://nodejs.org/en/ - v8
+* GULP - https://gulpjs.com/
+* YEOMAN - https://yeoman.io/
+* TYPESCRIPT - https://www.typescriptlang.org/
+* BOOTSTRAP - https://getbootstrap.com/docs/4.0/getting-started/introduction/
+* UI FABRIC - https://developer.microsoft.com/en-us/fabric
+
+### Installation
+
+This requires [Node.js](https://nodejs.org/) v8 to run.
+
+Install the dependencies and devDependencies and start the server.
+
+```sh
+$ cd react-spfx
+$ npm install --save
+$ node app
+$ npm run srv
 ```
 
-This package produces the following:
+For production deployments...
 
-* lib/* - intermediate-stage commonjs build artifacts
-* dist/* - the bundled script, along with other resources
-* deploy/* - all resources which should be uploaded to a CDN.
+```sh
+$ gulp bundle --ship
+$ gulp package-solution --ship
+```
 
-### Build options
+### Todos
 
-gulp clean - TODO
-gulp test - TODO
-gulp serve - TODO
-gulp bundle - TODO
-gulp package-solution - TODO
+ - Write MORE Boostrap and UI Fabric Components
+ - Azure Configuration and Function integration
+ - CI / CD implementation
