@@ -57,6 +57,14 @@
           "manifest": "./src/extensions/listContextMenu/ListContextMenuCommandSet.manifest.json"
         }
       ]
+    },
+    "bulklist-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/bulklist/BulklistWebPart.js",
+          "manifest": "./src/webparts/bulklist/BulklistWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {
@@ -78,13 +86,6 @@
         "jquery"
       ]
     },
-    // "react.production.js": {
-    //   "path": "https://unpkg.com/react/umd/react.production.js",
-    //   "globalName": "react.production.js",
-    //   "globalDependencies": [
-    //     "jquery"
-    //   ]
-    // },
     "react-bootstrap.js": {
       "path": "https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js",
       "globalName": "react-bootstrap.js",
@@ -100,6 +101,7 @@
     "ImagecarouselWebPartStrings": "lib/webparts/imagecarousel/loc/{locale}.js",
     "SamplewebpartWebPartStrings": "lib/webparts/samplewebpart/loc/{locale}.js",
     "CustomFieldsFieldCustomizerStrings": "lib/extensions/customFields/loc/{locale}.js",
-    "ListContextMenuCommandSetStrings": "lib/extensions/listContextMenu/loc/{locale}.js"
+    "ListContextMenuCommandSetStrings": "lib/extensions/listContextMenu/loc/{locale}.js",
+    "BulklistWebPartStrings": "lib/webparts/bulklist/loc/{locale}.js"
   }
 }

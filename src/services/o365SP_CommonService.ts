@@ -13,35 +13,71 @@ require('bootstrap');
 require('popper.js');
 
 
+export function render5k(currentProps, currentState): any {
+  currentState._imgItems = [];
+  var intCount, intervalCount = 0;
+
+  //count Items
+  let _getitemCount = currentState.props.siteUrl.concat("/_api/web/Lists/GetByTitle('" + "LogTransaction" + "')/ItemCount")
+  currentProps.spHttpClient.get(_getitemCount, SPHttpClient.configurations.v1).then((response: SPHttpClientResponse) => {
+    if (response.ok) {
+      response.json().then((responseJSON) => {
+        intCount = parseInt(responseJSON.value);
+        alert("Total Items: " + responseJSON.value);
+      });
+    }
+  });
+  var nextCount = 0;
+  //override total
+  intCount = 8000;
+  intervalCount = 5000;
+
+  for (var i = 0; i < intCount; i += 5000) {
+    nextCount += 5000;
+    let _requestUrl = currentState.props.siteUrl.concat("/_api/web/Lists/GetByTitle('" + "LogTransaction" + "')/Items?%24skiptoken=Paged%3DTRUE%26p_ID%3D" + (i.toString()) + "&%24top=" + (nextCount.toString()) + "&$select=Attachments,AttachmentFiles,*&$expand=AttachmentFiles")
+    console.log(_requestUrl);
+    currentProps.spHttpClient.get(_requestUrl, SPHttpClient.configurations.v1).then((response: SPHttpClientResponse) => {
+      if (response.ok) {
+        response.json().then((responseJSON) => {
+          responseJSON.value.map((list: IODataList) => {
+            currentState._imgItems.push({ Title: list.Title, Source: list.Source, Transaction: list.Transaction, EventDate: list.EventDate, UserName: list.UserName }); //
+          });
+        });
+      }
+    });
+  }
+
+  currentState.forceUpdate();
+};
 export function renderImageCarousel(currentProps, currentState): any {
   currentState._imgItems = [];
 
   //------- COMMENTED FOR TEST 
   let _requestUrl = currentState.props.siteUrl.concat("/_api/web/Lists/GetByTitle('" + "ImageCarousel" + "')/GetItems?$select=Title,Description,FileRef")
-  let _camlSingleQuery = 
-                      `<View><Query></Query></View>`;
+  let _camlSingleQuery =
+    `<View><Query></Query></View>`;
   const camlQueryPayLoad: any = {
     query: {
       __metadata: { type: 'SP.CamlQuery' },
       ViewXml: _camlSingleQuery
     }
   };
-let postOptions: ISPHttpClientOptions = { headers: { 'odata-version': '3.0' }, body: JSON.stringify(camlQueryPayLoad) };
-//currentProps.spHttpClient.post(_requestUrl, SPHttpClient.configurations.v1, postOptions)
-currentProps.spHttpClient.post(_requestUrl, SPHttpClient.configurations.v1, postOptions)
-  .then((response: SPHttpClientResponse) => {
-    if (response.ok) {
-      response.json().then((responseJSON) => {
-        if (responseJSON != null && responseJSON.value != null) {
-          responseJSON.value.map((list: IODataList) => {
-            currentState._imgItems.push({ Title: list.Title, Description: list.Description, Thumbnail: list.FileRef  }); //
-          });
-        currentState.forceUpdate();
-         
-        }
-      })
-    }
-  });
+  let postOptions: ISPHttpClientOptions = { headers: { 'odata-version': '3.0' }, body: JSON.stringify(camlQueryPayLoad) };
+  //currentProps.spHttpClient.post(_requestUrl, SPHttpClient.configurations.v1, postOptions)
+  currentProps.spHttpClient.post(_requestUrl, SPHttpClient.configurations.v1, postOptions)
+    .then((response: SPHttpClientResponse) => {
+      if (response.ok) {
+        response.json().then((responseJSON) => {
+          if (responseJSON != null && responseJSON.value != null) {
+            responseJSON.value.map((list: IODataList) => {
+              currentState._imgItems.push({ Title: list.Title, Description: list.Description, Thumbnail: list.FileRef }); //
+            });
+            currentState.forceUpdate();
+
+          }
+        })
+      }
+    });
 };
 export function renderMenuNav(currentProps, currentState, topNav): any {
   currentState._menuItems = [];
@@ -55,73 +91,73 @@ export function renderMenuNav(currentProps, currentState, topNav): any {
       ViewXml: _camlSingleQuery
     }
   };
-let postOptions: ISPHttpClientOptions = { headers: { 'odata-version': '3.0' }, body: JSON.stringify(camlQueryPayLoad) };
-currentProps.spHttpClient.post(_requestUrl, SPHttpClient.configurations.v1, postOptions)
-  .then((response: SPHttpClientResponse) => {
-    if (response.ok) {
-      response.json().then((responseJSON) => {
-        if (responseJSON != null && responseJSON.value != null) {
-          responseJSON.value.map((list: IODataList) => {
-            currentState._menuItems.push({ FieldName: list.Title, ParentField: list.ParentField, Url: list.URL, IsExpanded: list.IsExpanded  }); //
-          });
+  let postOptions: ISPHttpClientOptions = { headers: { 'odata-version': '3.0' }, body: JSON.stringify(camlQueryPayLoad) };
+  currentProps.spHttpClient.post(_requestUrl, SPHttpClient.configurations.v1, postOptions)
+    .then((response: SPHttpClientResponse) => {
+      if (response.ok) {
+        response.json().then((responseJSON) => {
+          if (responseJSON != null && responseJSON.value != null) {
+            responseJSON.value.map((list: IODataList) => {
+              currentState._menuItems.push({ FieldName: list.Title, ParentField: list.ParentField, Url: list.URL, IsExpanded: list.IsExpanded }); //
+            });
 
-          let newDiv = '<ul class="nav nav-pills">';
+            let newDiv = '<ul class="nav nav-pills">';
 
-          var filterArr = currentState._menuItems.filter(function (e) {
-            return (e.ParentField === 'N/A' || e.ParentField === 'Parent');
-          });
-          var arrayLength = filterArr.length;
-          for (var i = 0; i < arrayLength; i++) {
-            if(filterArr[i].ParentField == 'Parent'){
-              newDiv +=  '<li class="nav-item dropdown">' + '<a id=' + '"id_' + filterArr[i].FieldName.trim().replace(' ','') + '" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' + filterArr[i].FieldName.trim() + '</a>';
-              newDiv += '<div class="dropdown-menu bg-secondary" aria-labelledby=' + '"id_' + filterArr[i].FieldName.trim().replace(' ','') + '">';        
-              var filterChildArr = currentState._menuItems.filter(function (e) {
-                return (e.ParentField === filterArr[i].FieldName);
-              });
-              console.log('Filtering ' + filterArr[i].FieldName);
-              var arrayChildLength = filterChildArr.length;
-              for (var xi = 0; xi < arrayChildLength; xi++) {
-                console.log('Add ' + filterChildArr[xi].FieldName.trim() + ' in ' +  filterArr[i].FieldName + ' | Parent: ' + filterArr[i].ParentField);
-                newDiv += '<a class="dropdown-item p-3" href=' + filterChildArr[xi].Url + '><h5>' + filterChildArr[xi].FieldName.trim() + '</h5></a><div class="dropdown-divider"></div>';
-              }     
-              newDiv +=  `</div></li>`;
+            var filterArr = currentState._menuItems.filter(function (e) {
+              return (e.ParentField === 'N/A' || e.ParentField === 'Parent');
+            });
+            var arrayLength = filterArr.length;
+            for (var i = 0; i < arrayLength; i++) {
+              if (filterArr[i].ParentField == 'Parent') {
+                newDiv += '<li class="nav-item dropdown">' + '<a id=' + '"id_' + filterArr[i].FieldName.trim().replace(' ', '') + '" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' + filterArr[i].FieldName.trim() + '</a>';
+                newDiv += '<div class="dropdown-menu bg-secondary" aria-labelledby=' + '"id_' + filterArr[i].FieldName.trim().replace(' ', '') + '">';
+                var filterChildArr = currentState._menuItems.filter(function (e) {
+                  return (e.ParentField === filterArr[i].FieldName);
+                });
+                console.log('Filtering ' + filterArr[i].FieldName);
+                var arrayChildLength = filterChildArr.length;
+                for (var xi = 0; xi < arrayChildLength; xi++) {
+                  console.log('Add ' + filterChildArr[xi].FieldName.trim() + ' in ' + filterArr[i].FieldName + ' | Parent: ' + filterArr[i].ParentField);
+                  newDiv += '<a class="dropdown-item p-3" href=' + filterChildArr[xi].Url + '><h5>' + filterChildArr[xi].FieldName.trim() + '</h5></a><div class="dropdown-divider"></div>';
+                }
+                newDiv += `</div></li>`;
+              }
+              else if (filterArr[i].ParentField == 'N/A') {
+                newDiv += '<li class="nav-item"><a class="nav-link" href=' + filterArr[i].Url + '>' + filterArr[i].FieldName + '</a></li>';
+              }
+
             }
-            else if(filterArr[i].ParentField == 'N/A'){
-              newDiv += '<li class="nav-item"><a class="nav-link" href=' + filterArr[i].Url + '>' + filterArr[i].FieldName + '</a></li>';
-            }
-          
-          }
-          if (topNav) {      
-            topNav.domElement.innerHTML = `<div class=${onStyle.app}>
+            if (topNav) {
+              topNav.domElement.innerHTML = `<div class=${onStyle.app}>
                         <div class="ms-bgColor-themeDark ms-fontColor-white ${onStyle.header}">
                           <img src=${escape(log_STR)} class=${onStyle.iconImgsHeader}></img>
                           </div>
                           <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
                           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
-                          </button>` + newDiv +  `</ul>
+                          </button>` + newDiv + `</ul>
                           </div>`;
-          }
+            }
 
-          
-      
-        }
-      })
-    }
-  })
-};
-  export function renderDataGrid(currentProps, currentState): any {
-    currentState._menuItems = [];
-  
-    //------- COMMENTED FOR TEST 
-    let _requestUrl = currentState.props.siteUrl.concat("/_api/web/Lists/GetByTitle('" + "BikeLibrary" + "')/GetItems")
-    let _camlSingleQuery = "<View><Query></Query></View>"
-    const camlQueryPayLoad: any = {
-      query: {
-        __metadata: { type: 'SP.CamlQuery' },
-        ViewXml: _camlSingleQuery
+
+
+          }
+        })
       }
-    };
+    })
+};
+export function renderDataGrid(currentProps, currentState): any {
+  currentState._menuItems = [];
+
+  //------- COMMENTED FOR TEST 
+  let _requestUrl = currentState.props.siteUrl.concat("/_api/web/Lists/GetByTitle('" + "BikeLibrary" + "')/GetItems")
+  let _camlSingleQuery = "<View><Query></Query></View>"
+  const camlQueryPayLoad: any = {
+    query: {
+      __metadata: { type: 'SP.CamlQuery' },
+      ViewXml: _camlSingleQuery
+    }
+  };
   let postOptions: ISPHttpClientOptions = { headers: { 'odata-version': '3.0' }, body: JSON.stringify(camlQueryPayLoad) };
   //currentProps.spHttpClient.post(_requestUrl, SPHttpClient.configurations.v1, postOptions)
   currentProps.spHttpClient.post(_requestUrl, SPHttpClient.configurations.v1, postOptions)
@@ -130,10 +166,10 @@ currentProps.spHttpClient.post(_requestUrl, SPHttpClient.configurations.v1, post
         response.json().then((responseJSON) => {
           if (responseJSON != null && responseJSON.value != null) {
             responseJSON.value.map((list: IODataList) => {
-              currentState._spItems.push({ Title: list.Title, Description: list.Description, Thumbnail: list.Thumbnail  }); //
+              currentState._spItems.push({ Title: list.Title, Description: list.Description, Thumbnail: list.Thumbnail }); //
             });
-          currentState.forceUpdate();
-           
+            currentState.forceUpdate();
+
           }
         })
       }
@@ -195,8 +231,8 @@ export function editSingleListItem(searchText, currentProps, currentEtag, curren
     .then((response: SPHttpClientResponse) => {
       if (response.ok) {
         renderDataGrid(currentProps, currentState);
-        currentState.setState({ searchId: 0, hideDialog: true, searchTitle: "", searcDescription: "", searchThumbnail: "" , showSuccessMSGBR: true });
-      } else { currentState.setState({ searchId: 0, hideDialog: true, searchTitle: "", searcDescription: "", searchThumbnail: "" , showErrorMSGBR: true }); }
+        currentState.setState({ searchId: 0, hideDialog: true, searchTitle: "", searcDescription: "", searchThumbnail: "", showSuccessMSGBR: true });
+      } else { currentState.setState({ searchId: 0, hideDialog: true, searchTitle: "", searcDescription: "", searchThumbnail: "", showErrorMSGBR: true }); }
     });
 };
 export function addSingleListItem(searchText, currentProps, currentEtag, currentState) {
@@ -229,8 +265,8 @@ export function addSingleListItem(searchText, currentProps, currentEtag, current
     .then((response: SPHttpClientResponse) => {
       if (response.ok) {
         renderDataGrid(currentProps, currentState);
-        currentState.setState({ searchId: 0, hideDialog: true, searchTitle: "", searcDescription: "", searchThumbnail: "" , showSuccessMSGBR: true });
-      } else { currentState.setState({ searchId: 0, hideDialog: true, searchTitle: "", searcDescription: "", searchThumbnail: "" , showErrorMSGBR: true }); }
+        currentState.setState({ searchId: 0, hideDialog: true, searchTitle: "", searcDescription: "", searchThumbnail: "", showSuccessMSGBR: true });
+      } else { currentState.setState({ searchId: 0, hideDialog: true, searchTitle: "", searcDescription: "", searchThumbnail: "", showErrorMSGBR: true }); }
     });
 };
 export function deleteSingleListItem(searchText, currentProps, currentEtag, currentState) {
@@ -261,8 +297,8 @@ export function deleteSingleListItem(searchText, currentProps, currentEtag, curr
     .then((response: SPHttpClientResponse) => {
       if (response.ok) {
         renderDataGrid(currentProps, currentState);
-        currentState.setState({ searchId: 0, hideDialog: true, searchTitle: "", searcDescription: "", searchThumbnail: "" ,showSuccessMSGBR: true });
-      } else { currentState.setState({ searchId: 0, hideDialog: true, searchTitle: "", searcDescription: "", searchThumbnail: "" , showErrorMSGBR: true }); }
+        currentState.setState({ searchId: 0, hideDialog: true, searchTitle: "", searcDescription: "", searchThumbnail: "", showSuccessMSGBR: true });
+      } else { currentState.setState({ searchId: 0, hideDialog: true, searchTitle: "", searcDescription: "", searchThumbnail: "", showErrorMSGBR: true }); }
     });
 };
 export class o365SP_CommonService {

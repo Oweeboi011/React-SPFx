@@ -13,8 +13,6 @@ import { SearchBox } from 'office-ui-fabric-react/lib/SearchBox';
 import { Dialog, DialogType, DialogFooter, DialogBase, DialogContent } from 'office-ui-fabric-react/lib/Dialog';
 import { Fabric } from 'office-ui-fabric-react/lib/Fabric';
 import { Image, ImageFit } from 'office-ui-fabric-react/lib/Image';
-import { Link } from 'office-ui-fabric-react/lib/Link';
-import { DetailsList } from 'office-ui-fabric-react/lib/DetailsList';
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
 import { FocusZone, FocusZoneDirection } from 'office-ui-fabric-react/lib/FocusZone';
 import { List } from 'office-ui-fabric-react/lib/List';

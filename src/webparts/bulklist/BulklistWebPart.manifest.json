@@ -1,0 +1,21 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+  "id": "1bc54875-3780-40e2-be95-cb7f1d23dde1",
+  "alias": "BulklistWebPart",
+  "componentType": "WebPart",
+  "version": "*",
+  "manifestVersion": 2,
+  "supportsFullBleed": true,
+  "requiresCustomScript": false,
+  "supportedHosts": ["SharePointWebPart"],
+  "preconfiguredEntries": [{
+    "groupId": "5c03119e-3074-46fd-976b-c60198311f70", 
+    "group": { "default": "Other" },
+    "title": { "default": "bulklist" },
+    "description": { "default": "bulklist" },
+    "iconImageUrl": "http://clipart-library.com/images/LcdoM99xi.png",
+    "properties": {
+      "description": "bulklist"
+    }
+  }]
+}

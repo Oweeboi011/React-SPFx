@@ -4,7 +4,7 @@
   "https": true,
   "serveConfigurations": {
     "default": {
-      "pageUrl": "https://accenturemanilapdc.sharepoint.com/sites/ReactSPFX/SitePages/Home.aspx",
+      "pageUrl": "https://accenturemanilapdc.sharepoint.com/sites/ReactSPFX/SitePages/ProvisioningProject.aspx",
       "fieldCustomizers": {
         "InternalFieldName": {
           "id": "a09c9da0-88f4-4118-89e5-f3e19b9fc721",
@@ -37,5 +37,10 @@
         }
       }
     }
+  },
+  "initialPage": "https://localhost:5432/workbench",
+  "api": {
+    "port": 5432,
+    "entryPath": "node_modules/@microsoft/sp-webpart-workbench/lib/api/"
   }
 }
