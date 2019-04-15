@@ -79,8 +79,8 @@ export async function render5k(currentProps, currentState) {
         });
         batchCount = _xxxItems.length;
 
-        if (_xxxItems.length > 6000) {
-          currentState.context.statusRenderer.clearLoadingIndicator(currentState.domElement);
+        if (_xxxItems.length > 2000) {
+          currentProps.ShowLoading = false;
           currentState._spItems = _xxxItems;
           currentState.forceUpdate();
         }

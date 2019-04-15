@@ -1,4 +1,5 @@
 import { SPHttpClient, SPHttpClientResponse, ISPHttpClientOptions } from '@microsoft/sp-http';
+import { _loadingSpinner } from '../BulklistWebPart';
 
 export interface IBulklistProps {
   description: string;
@@ -9,5 +10,6 @@ export interface IBulklistProps {
   searcDescription: string;
   searchThumbnail: string;
   spHttpClient: SPHttpClient;
-  ShowLoading: Boolean;
+  ShowLoading: boolean;
+  loadingSpinnerCallback: LoadingCallback;
 }

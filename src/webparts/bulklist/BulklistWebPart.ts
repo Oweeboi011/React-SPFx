@@ -23,7 +23,7 @@ export interface IBulklistWebPartProps {
   searcDescription: string;
   searchThumbnail: string;
   spHttpClient: SPHttpClient;
-  ShowLoading: Boolean;
+  ShowLoading: boolean;
 
 }
 
@@ -41,31 +41,22 @@ export default class BulklistWebPart extends BaseClientSideWebPart<IBulklistWebP
         searcDescription: "",
         searchThumbnail: "",
         spHttpClient: this.context.spHttpClient,
-        ShowLoading: true
+        ShowLoading: true,
+        loadingSpinnerCallback?: this._loadingSpinner.bind(this)
       }
     );
-    ReactDom.render(element, this.domElement);
-
-    //execute loader
-    this.context.statusRenderer.clearLoadingIndicator(this.domElement);
-    if (this.properties.ShowLoading) {
-      this.context.statusRenderer.displayLoadingIndicator(this.domElement, "Wait ka lang paps....");
-    } else {
-      this.domElement.innerHTML = `
-      <div class="${styles.loadingIndicator}">
-        <div class="${styles.row}">
-          <div class="${styles.container}">
-            <div class="${styles.specialbox}" id="myspecialbox">
-            </div>
-          </div>
-        </div>
-      </div>`;
-      this.context.statusRenderer.displayLoadingIndicator(document.getElementById("myspecialbox"), "Wait ka lang paps....");
-    }
     
-
+    ReactDom.render(element, this.domElement);
+    this.context.statusRenderer.displayLoadingIndicator(this.domElement, "Wait ka lang paps....");
   }
 
+  public _loadingSpinner(open: boolean, message: string): void{
+    if(open){
+      this.context.statusRenderer.displayLoadingIndicator(this.domElement, "Wait ka lang paps....");    
+    }else{
+      this.context.statusRenderer.clearLoadingIndicator(this.domElement);
+    }
+  }
   protected onDispose(): void {
     ReactDom.unmountComponentAtNode(this.domElement);
   }
@@ -76,6 +67,7 @@ export default class BulklistWebPart extends BaseClientSideWebPart<IBulklistWebP
 
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
     return {
+      //showLoadingIndicator: this.properties.ShowLoading,   
       pages: [
         {
           header: {
