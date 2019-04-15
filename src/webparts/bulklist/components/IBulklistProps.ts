@@ -1,5 +1,5 @@
 import { SPHttpClient, SPHttpClientResponse, ISPHttpClientOptions } from '@microsoft/sp-http';
-import { _loadingSpinner } from '../BulklistWebPart';
+import { Context } from 'react';
 
 export interface IBulklistProps {
   description: string;
@@ -11,5 +11,6 @@ export interface IBulklistProps {
   searchThumbnail: string;
   spHttpClient: SPHttpClient;
   ShowLoading: boolean;
-  loadingSpinnerCallback: LoadingCallback;
+  parentContext: any;
+  targetDom: any;
 }

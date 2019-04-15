@@ -24,9 +24,17 @@ export interface IBulklistWebPartProps {
   searchThumbnail: string;
   spHttpClient: SPHttpClient;
   ShowLoading: boolean;
-
+  parentContext: any;
+  targetDom: any;
 }
 
+export function _loadingSpinner(open: boolean, message: string, iProps: any): void{
+  if(open){
+    iProps.parentContext.statusRenderer.displayLoadingIndicator(iProps.targetDom, message);    
+  }else{
+    iProps.parentContext.statusRenderer.clearLoadingIndicator(iProps.targetDom);
+  }
+}
 export default class BulklistWebPart extends BaseClientSideWebPart<IBulklistWebPartProps> {
 
   public render(): void {
@@ -42,21 +50,19 @@ export default class BulklistWebPart extends BaseClientSideWebPart<IBulklistWebP
         searchThumbnail: "",
         spHttpClient: this.context.spHttpClient,
         ShowLoading: true,
-        loadingSpinnerCallback?: this._loadingSpinner.bind(this)
+        parentContext: this.context,
+        targetDom: this.domElement
       }
     );
     
     ReactDom.render(element, this.domElement);
-    this.context.statusRenderer.displayLoadingIndicator(this.domElement, "Wait ka lang paps....");
+    // if(this.properties.ShowLoading){
+    // this.context.statusRenderer.displayLoadingIndicator(this.domElement, "Wait ka lang paps....");
+    // }else{
+    //   this.context.statusRenderer.clearLoadingIndicator(this.domElement);
+    // }
   }
 
-  public _loadingSpinner(open: boolean, message: string): void{
-    if(open){
-      this.context.statusRenderer.displayLoadingIndicator(this.domElement, "Wait ka lang paps....");    
-    }else{
-      this.context.statusRenderer.clearLoadingIndicator(this.domElement);
-    }
-  }
   protected onDispose(): void {
     ReactDom.unmountComponentAtNode(this.domElement);
   }

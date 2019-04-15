@@ -7,6 +7,7 @@ import { List } from 'office-ui-fabric-react/lib/List';
 import { Image, ImageFit } from 'office-ui-fabric-react/lib/Image';
 import { getRTL } from 'office-ui-fabric-react/lib/Utilities';
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
+import { _loadingSpinner } from '../BulklistWebPart';
 
 //force office fabric scss
 import { initializeIcons } from 'office-ui-fabric-react/lib/Icons';

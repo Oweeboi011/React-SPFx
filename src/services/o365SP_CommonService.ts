@@ -8,6 +8,7 @@ const react_STR: string = "https://accenturemanilapdc.sharepoint.com/sites/SiteA
 import onStyle from '../extensions/headerfooter/HeaderfooterApplicationCustomizer.module.scss';
 import { escape } from '@microsoft/sp-lodash-subset';
 import $ from '../scripts/jquery.min.js';
+import { _loadingSpinner } from '../webparts/bulklist/BulklistWebPart';
 
 require('jquery');
 require('bootstrap');
@@ -35,6 +36,7 @@ require('popper.js');
 export async function render5k(currentProps, currentState) {
   try {
     currentState._spItems = [];
+    _loadingSpinner(true, ": Matuto kang mag-intay paps...", currentProps);
     var Items = []
     var intCount, intervalCount, batchCount = 0;
     var _xxxItems: {
@@ -80,7 +82,8 @@ export async function render5k(currentProps, currentState) {
         batchCount = _xxxItems.length;
 
         if (_xxxItems.length > 2000) {
-          currentProps.ShowLoading = false;
+          //currentProps.ShowLoading = false;
+          _loadingSpinner(false, "N/A", currentProps);
           currentState._spItems = _xxxItems;
           currentState.forceUpdate();
         }
