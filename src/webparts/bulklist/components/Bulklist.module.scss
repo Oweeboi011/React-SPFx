@@ -2,12 +2,12 @@
 
 .bulklist {
   .container {
-    max-width: 700px;
+    max-width: auto;
     margin: 0px auto;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
   }
 
-  .row {
+  .row {  
     @include ms-Grid-row;
     @include ms-fontColor-white;
     background-color: $ms-color-themeDark;
@@ -35,6 +35,28 @@
   .description {
     @include ms-font-l;
     @include ms-fontColor-white;
+  }
+
+  .loadingIndicator {
+    .container {
+      max-width: 700px;
+      margin: 0px auto;
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
+    }
+  
+    .specialbox {
+      border: 2px solid;
+    }
+  
+    .row {
+      padding: 20px;
+    }
+  
+    .listItem {
+      max-width: 715px;
+      margin: 5px auto 5px auto;
+      box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
+    }
   }
 
   .button {

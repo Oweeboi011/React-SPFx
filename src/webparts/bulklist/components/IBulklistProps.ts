@@ -9,4 +9,5 @@ export interface IBulklistProps {
   searcDescription: string;
   searchThumbnail: string;
   spHttpClient: SPHttpClient;
+  ShowLoading: Boolean;
 }

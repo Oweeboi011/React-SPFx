@@ -2,6 +2,8 @@ import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
+import styles from '../bulklist/components/Bulklist.module.scss';
+
 import {
   IPropertyPaneConfiguration,
   PropertyPaneTextField
@@ -21,12 +23,14 @@ export interface IBulklistWebPartProps {
   searcDescription: string;
   searchThumbnail: string;
   spHttpClient: SPHttpClient;
+  ShowLoading: Boolean;
+
 }
 
 export default class BulklistWebPart extends BaseClientSideWebPart<IBulklistWebPartProps> {
 
   public render(): void {
-    const element: React.ReactElement<IBulklistProps > = React.createElement(
+    const element: React.ReactElement<IBulklistProps> = React.createElement(
       Bulklist,
       {
         description: this.properties.description,
@@ -36,11 +40,30 @@ export default class BulklistWebPart extends BaseClientSideWebPart<IBulklistWebP
         searchTitle: "",
         searcDescription: "",
         searchThumbnail: "",
-        spHttpClient: this.context.spHttpClient
+        spHttpClient: this.context.spHttpClient,
+        ShowLoading: true
       }
     );
-
     ReactDom.render(element, this.domElement);
+
+    //execute loader
+    this.context.statusRenderer.clearLoadingIndicator(this.domElement);
+    if (this.properties.ShowLoading) {
+      this.context.statusRenderer.displayLoadingIndicator(this.domElement, "Wait ka lang paps....");
+    } else {
+      this.domElement.innerHTML = `
+      <div class="${styles.loadingIndicator}">
+        <div class="${styles.row}">
+          <div class="${styles.container}">
+            <div class="${styles.specialbox}" id="myspecialbox">
+            </div>
+          </div>
+        </div>
+      </div>`;
+      this.context.statusRenderer.displayLoadingIndicator(document.getElementById("myspecialbox"), "Wait ka lang paps....");
+    }
+    
+
   }
 
   protected onDispose(): void {

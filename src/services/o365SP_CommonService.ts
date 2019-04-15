@@ -1,4 +1,5 @@
-import { SPHttpClient, SPHttpClientResponse, ISPHttpClientOptions } from '@microsoft/sp-http';
+import { SPHttpClient, SPHttpClientResponse, ISPHttpClientOptions, ISPHttpClientBatchOptions, ISPHttpClientBatchCreationOptions, SPHttpClientBatch } from '@microsoft/sp-http';
+
 import { Context } from 'react';
 import { WebPartContext } from '@microsoft/sp-webpart-base';
 import { IODataList, IODataListItem } from '@microsoft/sp-odata-types';
@@ -12,11 +13,90 @@ require('jquery');
 require('bootstrap');
 require('popper.js');
 
+// interface IHttpResponse<T> extends Response {
+//   parsedBody?: T;
+// }
 
-export function render5k(currentProps, currentState): any {
+// export const http = <T>(request: RequestInfo): Promise<IHttpResponse<T>> => {
+//   let response: IHttpResponse<T>;
+//   return new Promise(resolve => {
+//     fetch(request)
+//       .then(res => {
+//         response = res;
+//         return res.json();
+//       })
+//       .then(body => {
+//         response.parsedBody = body;
+//         resolve(response);
+//       });
+//   });
+// };
+
+export async function render5k(currentProps, currentState) {
+  try {
+    currentState._spItems = [];
+    var Items = []
+    var intCount, intervalCount, batchCount = 0;
+    var _xxxItems: {
+      Title: string,
+      Source: string,
+      Transaction: string,
+      EventDate: string,
+      UserName: string,
+    }[] = [];
+
+    var nextCount = 0;
+    intervalCount = 5000;
+    let _requestUrl = "";
+    _xxxItems = [];
+    //count Items
+    let _getitemCount = currentState.props.siteUrl.concat("/_api/web/Lists/GetByTitle('" + "LogTransaction" + "')/ItemCount")
+    var jsonRequest_Count = await currentProps.spHttpClient.get(_getitemCount, SPHttpClient.configurations.v1);
+    if (!jsonRequest_Count.ok) {
+      const responseText = await jsonRequest_Count.text();
+      throw new Error(responseText + " || " + _getitemCount);
+    };
+    //If request was successful
+    intCount = await jsonRequest_Count.json();
+
+    //execute loop   
+    for (var i = 0; i < intCount.value; i += 1000) {
+      try {
+        nextCount += 1000;
+        _requestUrl = currentState.props.siteUrl.concat("/_api/web/Lists/GetByTitle('" + "LogTransaction" + "')/Items?%24skiptoken=Paged%3DTRUE%26p_ID=" + (i.toString()) + "&%24top=" + (nextCount.toString()) + "&$select=Attachments,AttachmentFiles,*&$expand=AttachmentFiles")
+        const jsonRequest_5k = await currentProps.spHttpClient.get(_requestUrl, SPHttpClient.configurations.v1);
+
+        if (!jsonRequest_5k.ok) {
+          const responseText = await jsonRequest_5k.text();
+          throw new Error(responseText + _requestUrl);
+        };
+        //If request was successful
+        const resGrid: any = await jsonRequest_5k.json();
+        //map
+        resGrid.value.map((list: IODataList) => {
+          _xxxItems.push({ Title: list.Title, Source: list.Source, Transaction: list.Transaction, EventDate: list.EventDate, UserName: list.UserName }); //
+          console.log("Added " + list.Title);
+        });
+        batchCount = _xxxItems.length;
+
+        if (_xxxItems.length > 6000) {
+          currentState.context.statusRenderer.clearLoadingIndicator(currentState.domElement);
+          currentState._spItems = _xxxItems;
+          currentState.forceUpdate();
+        }
+      } catch (error) {
+        throw new Error(error);
+      }
+    }
+    //currentState._spItems = resGrid;
+  } catch (error) {
+    console.log("Reach Batch Count: " + batchCount.toString() + " --> " + error);
+  }
+}
+export function renderBatch5k(currentProps, currentState): any {
   currentState._imgItems = [];
-  var intCount, intervalCount = 0;
-
+  var intCount, intervalCount, batchCount = 0;
+  var reqObj = [];
   //count Items
   let _getitemCount = currentState.props.siteUrl.concat("/_api/web/Lists/GetByTitle('" + "LogTransaction" + "')/ItemCount")
   currentProps.spHttpClient.get(_getitemCount, SPHttpClient.configurations.v1).then((response: SPHttpClientResponse) => {
@@ -31,24 +111,38 @@ export function render5k(currentProps, currentState): any {
   //override total
   intCount = 8000;
   intervalCount = 5000;
+  let _requestUrl = "";
+  //initiate batch
+  const spBatchCreationOpts: ISPHttpClientBatchCreationOptions = { webUrl: currentState.props.siteUrl };
+  const spBatch: SPHttpClientBatch = currentProps.spHttpClient.beginBatch(spBatchCreationOpts);
+  _requestUrl = currentState.props.siteUrl.concat("/_api/web/Lists/GetByTitle('" + "LogTransaction" + "')/ItemCount") ///test
+  const _newBatch: Promise<SPHttpClientResponse> = spBatch.get(_requestUrl, SPHttpClientBatch.configurations.v1);
 
   for (var i = 0; i < intCount; i += 5000) {
     nextCount += 5000;
-    let _requestUrl = currentState.props.siteUrl.concat("/_api/web/Lists/GetByTitle('" + "LogTransaction" + "')/Items?%24skiptoken=Paged%3DTRUE%26p_ID%3D" + (i.toString()) + "&%24top=" + (nextCount.toString()) + "&$select=Attachments,AttachmentFiles,*&$expand=AttachmentFiles")
-    console.log(_requestUrl);
-    currentProps.spHttpClient.get(_requestUrl, SPHttpClient.configurations.v1).then((response: SPHttpClientResponse) => {
-      if (response.ok) {
-        response.json().then((responseJSON) => {
-          responseJSON.value.map((list: IODataList) => {
-            currentState._imgItems.push({ Title: list.Title, Source: list.Source, Transaction: list.Transaction, EventDate: list.EventDate, UserName: list.UserName }); //
-          });
-        });
-      }
-    });
+    batchCount += 1;
+    _requestUrl = currentState.props.siteUrl.concat("/_api/web/Lists/GetByTitle('" + "LogTransaction" + "')/Items?%24skiptoken=Paged%3DTRUE%26p_ID%3D" + (i.toString()) + "&%24top=" + (nextCount.toString()) + "&$select=Attachments,AttachmentFiles,*&$expand=AttachmentFiles")
+    const _newBatch: Promise<SPHttpClientResponse> = spBatch.get(_requestUrl, SPHttpClientBatch.configurations.v1);
+    reqObj.push(_newBatch)
   }
 
-  currentState.forceUpdate();
-};
+  spBatch.execute().then(() => {
+    for (var i = 0; i < reqObj.length; i++) {
+      reqObj[i].then((response: SPHttpClientResponse) => {
+        response.json().then((responseJSON) => {
+          responseJSON.value.map((list: IODataList) => {
+            console.log("Adding " + list.Title);
+            currentState._imgItems.push({ Title: list.Title, Source: list.Source, Transaction: list.Transaction, EventDate: list.EventDate, UserName: list.UserName }); //
+          });
+
+        }).catch(function (err) {
+          console.log(err);
+        });
+      });
+    }
+    currentState.forceUpdate();
+  });
+}
 export function renderImageCarousel(currentProps, currentState): any {
   currentState._imgItems = [];
 
@@ -114,10 +208,8 @@ export function renderMenuNav(currentProps, currentState, topNav): any {
                 var filterChildArr = currentState._menuItems.filter(function (e) {
                   return (e.ParentField === filterArr[i].FieldName);
                 });
-                console.log('Filtering ' + filterArr[i].FieldName);
                 var arrayChildLength = filterChildArr.length;
                 for (var xi = 0; xi < arrayChildLength; xi++) {
-                  console.log('Add ' + filterChildArr[xi].FieldName.trim() + ' in ' + filterArr[i].FieldName + ' | Parent: ' + filterArr[i].ParentField);
                   newDiv += '<a class="dropdown-item p-3" href=' + filterChildArr[xi].Url + '><h5>' + filterChildArr[xi].FieldName.trim() + '</h5></a><div class="dropdown-divider"></div>';
                 }
                 newDiv += `</div></li>`;

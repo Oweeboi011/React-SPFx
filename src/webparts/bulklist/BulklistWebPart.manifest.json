@@ -15,7 +15,9 @@
     "description": { "default": "bulklist" },
     "iconImageUrl": "http://clipart-library.com/images/LcdoM99xi.png",
     "properties": {
-      "description": "bulklist"
+      "description": "bulklist", 
+      "ShowLoading": true,
+      "LoadingText": "Some Stuff, you know PAPS!"
     }
   }]
 }
