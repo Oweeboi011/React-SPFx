@@ -4,12 +4,15 @@
   "https": true,
   "serveConfigurations": {
     "default": {
-      "pageUrl": "https://accenturemanilapdc.sharepoint.com/sites/ReactSPFX/SitePages/ProvisioningProject.aspx",
-      "fieldCustomizers": {
-        "InternalFieldName": {
-          "id": "a09c9da0-88f4-4118-89e5-f3e19b9fc721",
+      "pageUrl": "https://accenturemanilapdc.sharepoint.com/sites/ReactSPFX/DeployPackage/Forms/AllItems.aspx",
+      "customActions": {
+        "4a465ca6-4cc5-436d-8ab6-36e1f0417b28": {
+          "location": "ClientSideExtension.ListViewCommandSet.CommandBar",
           "properties": {
-            "sampleText": "Value"
+            "sampleTextOne": "This feature will deploy the target package in SPO Tenant App Catalog!",
+            "sampleTextTwo": "This feature will simply download the .sppkg file in your local device.",
+            "sampleTextThree": "This feature will copy the target .sppkg file to your target Azure BLOB Storage.",
+            
           }
         }
       }
@@ -26,13 +29,15 @@
       }
     },
     "listContextMenu": {
-      "pageUrl": "https://accenturemanilapdc.sharepoint.com/sites/ReactSPFX/SitePages/Home.aspx",
+      "pageUrl": "https://accenturemanilapdc.sharepoint.com/sites/ReactSPFX/DeployPackage/Forms/AllItems.aspx",
       "customActions": {
         "4a465ca6-4cc5-436d-8ab6-36e1f0417b28": {
           "location": "ClientSideExtension.ListViewCommandSet.CommandBar",
           "properties": {
-            "sampleTextOne": "One item is selected in the list",
-            "sampleTextTwo": "This command is always visible."
+            "sampleTextOne": "This feature will deploy the target package in SPO Tenant App Catalog!",
+            "sampleTextTwo": "This feature will simply download the .sppkg file in your local device.",
+            "sampleTextThree": "This feature will copy the target .sppkg file to your target Azure BLOB Storage.",
+            
           }
         }
       }

@@ -19,6 +19,7 @@ export interface IListContextMenuCommandSetProperties {
   // This is an example; replace with your own properties
   sampleTextOne: string;
   sampleTextTwo: string;
+  sampleTextThree: string;
 }
 
 const LOG_SOURCE: string = 'ListContextMenuCommandSet';
@@ -48,6 +49,9 @@ export default class ListContextMenuCommandSet extends BaseListViewCommandSet<IL
         break;
       case 'COMMAND_2':
         Dialog.alert(`${this.properties.sampleTextTwo}`);
+        break;
+      case 'COMMAND_3':
+        Dialog.alert(`${this.properties.sampleTextThree}`);
         break;
       default:
         throw new Error('Unknown command');

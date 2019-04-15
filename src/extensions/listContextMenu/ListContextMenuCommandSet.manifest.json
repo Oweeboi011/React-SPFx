@@ -5,25 +5,23 @@
   "alias": "ListContextMenuCommandSet",
   "componentType": "Extension",
   "extensionType": "ListViewCommandSet",
-
-  // The "*" signifies that the version should be taken from the package.json
   "version": "*",
   "manifestVersion": 2,
-
-  // If true, the component can only be installed on sites where Custom Script is allowed.
-  // Components that allow authors to embed arbitrary script code should set this to true.
-  // https://support.office.com/en-us/article/Turn-scripting-capabilities-on-or-off-1f2c515f-5d7e-448a-9fd7-835da935584f
   "requiresCustomScript": false,
-
   "items": {
     "COMMAND_1": {
-      "title": { "default": "Command One" },
-      "iconImageUrl": "icons/request.png",
+      "title": { "default": "Deploy Package" },
+      "iconImageUrl": "https://www.pngkey.com/png/full/536-5363099_deploy-icon.png",
       "type": "command"
     },
     "COMMAND_2": {
-      "title": { "default": "Command Two" },
-      "iconImageUrl": "icons/cancel.png",
+      "title": { "default": "Download Package" },
+      "iconImageUrl": "https://freeiconshop.com/wp-content/uploads/edd/download-cloud-flat.png",
+      "type": "command"
+    },
+    "COMMAND_3": {
+      "title": { "default": "Copy to Azure" },
+      "iconImageUrl": "https://www.scribesoft.com/wp-content/uploads/2017/11/data-migration_icon_224x224.png",
       "type": "command"
     }
   }

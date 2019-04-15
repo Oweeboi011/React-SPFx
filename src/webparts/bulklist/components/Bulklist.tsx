@@ -12,7 +12,7 @@ import { _loadingSpinner } from '../BulklistWebPart';
 //force office fabric scss
 import { initializeIcons } from 'office-ui-fabric-react/lib/Icons';
 initializeIcons('dist/');
-import { renderBatch5k, render5k } from '../../../services/o365SP_CommonService';
+import { render5k } from '../../../services/o365SP_CommonService';
 
 
 export default class Bulklist extends React.Component<IBulklistProps, {}> {

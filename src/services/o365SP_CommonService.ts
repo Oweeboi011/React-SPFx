@@ -14,25 +14,6 @@ require('jquery');
 require('bootstrap');
 require('popper.js');
 
-// interface IHttpResponse<T> extends Response {
-//   parsedBody?: T;
-// }
-
-// export const http = <T>(request: RequestInfo): Promise<IHttpResponse<T>> => {
-//   let response: IHttpResponse<T>;
-//   return new Promise(resolve => {
-//     fetch(request)
-//       .then(res => {
-//         response = res;
-//         return res.json();
-//       })
-//       .then(body => {
-//         response.parsedBody = body;
-//         resolve(response);
-//       });
-//   });
-// };
-
 export async function render5k(currentProps, currentState) {
   try {
     currentState._spItems = [];
@@ -96,7 +77,7 @@ export async function render5k(currentProps, currentState) {
     console.log("Reach Batch Count: " + batchCount.toString() + " --> " + error);
   }
 }
-export function renderBatch5k(currentProps, currentState): any {
+export function renderBatchRequests(currentProps, currentState): any {
   currentState._imgItems = [];
   var intCount, intervalCount, batchCount = 0;
   var reqObj = [];
