@@ -6,6 +6,14 @@
         ClientSideComponentId="1d0f9fa8-57a6-481c-bc63-0c298d8302c0"
         ClientSideComponentProperties="{&quot;testMessage&quot;:&quot;Test message&quot;}">
     </CustomAction>
+    <CustomAction
+        Title="ListContextMenu"
+         RegistrationId="101"
+        RegistrationType="List"
+        Location="ClientSideExtension.ListViewCommandSet.CommandBar"
+        ClientSideComponentId="4a465ca6-4cc5-436d-8ab6-36e1f0417b28"
+        ClientSideComponentProperties="{&quot;sampleTextOne&quot;:&quot;One item is selected in the list.&quot;, &quot;sampleTextTwo&quot;:&quot;This command is always visible.&quot;,&quot;sampleTextThree&quot;:&quot;This command is always visible.&quot;}">
+    </CustomAction>
       <Field ID="{060E50AC-E9C1-3D3C-B1F9-DE0BCAC200F6}"
             Name="SPFxPercentage"
             DisplayName="BikeSerialNumber"
