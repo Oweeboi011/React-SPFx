@@ -4,18 +4,26 @@
   "https": true,
   "serveConfigurations": {
     "default": {
-      "pageUrl": "https://accenturemanilapdc.sharepoint.com/sites/ReactSPFX/DeployPackage/Forms/AllItems.aspx",
-      "customActions": {
-        "4a465ca6-4cc5-436d-8ab6-36e1f0417b28": {
-          "location": "ClientSideExtension.ListViewCommandSet.CommandBar",
+      "pageUrl": "https://accenturemanilapdc.sharepoint.com/sites/ReactSPFX/Lists/BikeLibrary/AllItems.aspx",
+      "fieldCustomizers": {
+        "BikeSerialNumber": {
+          "id": "a09c9da0-88f4-4118-89e5-f3e19b9fc721",
           "properties": {
-            "sampleTextOne": "This feature will deploy the target package in SPO Tenant App Catalog!",
-            "sampleTextTwo": "This feature will simply download the .sppkg file in your local device.",
-            "sampleTextThree": "This feature will copy the target .sppkg file to your target Azure BLOB Storage.",
-            
+            "sampleText": "Value"
           }
         }
       }
+      // "customActions": {
+      //   "4a465ca6-4cc5-436d-8ab6-36e1f0417b28": {
+      //     "location": "ClientSideExtension.ListViewCommandSet.CommandBar",
+      //     "properties": {
+      //       "sampleTextOne": "This feature will deploy the target package in SPO Tenant App Catalog!",
+      //       "sampleTextTwo": "This feature will simply download the .sppkg file in your local device.",
+      //       "sampleTextThree": "This feature will copy the target .sppkg file to your target Azure BLOB Storage.",
+            
+      //     }
+      //   }
+      // }
     },
     "customFields": {
       "pageUrl": "https://accenturemanilapdc.sharepoint.com/sites/ReactSPFX/Lists/BikeLibrary/AllItems.aspx",

@@ -2,7 +2,7 @@
 
 const gulp = require('gulp');
 const build = require('@microsoft/sp-build-web');
-// const spsync = require('gulp-spsync-creds').sync;
+const spsync = require('gulp-spsync-creds').sync;
 
 build.addSuppression(`Warning - [sass] The local CSS class 'ms-Grid' is not camelCase and will not be type-safe.`);
 
@@ -12,7 +12,7 @@ const production = {
     "tenant": "accenturemanilapdc",
     "cdnSite": "sites/AkuminaAddIn/",
     "cdnLib" : "AppCatalog",
-    "catalogSite": "<catalog-site-relative-path>"
+    "catalogSite": "/sites/AkuminaAddIn/"
 }
 
 const test = {
@@ -21,7 +21,7 @@ const test = {
     "tenant": "accenturemanilapdc",
     "cdnSite": "sites/AkuminaAddIn/",
     "cdnLib" : "AppCatalog",
-    "catalogSite": "<catalog-site-relative-path>"
+    "catalogSite": "/sites/AkuminaAddIn/"
 }
 
 build.task('upload-to-sharepoint', {
@@ -43,13 +43,16 @@ build.task('upload-to-sharepoint', {
 	}
 });
 
+function handleError (err) {
+	console.log("ERROR ENCOUNTERED: " + err.toString())
+	process.exit(-1)
+  }
+
 build.task('upload-app-pkg', {
 	execute: (config) => {
 		return new Promise((resolve, reject) => {
 			const pkgFile = require('./config/package-solution.json');
 			const folderLocation = `./sharepoint/${pkgFile.paths.zippedPackage}`;
-            log('Opening...   :' + pkgFile)
-            log('Opening...   :' + folderLocation)
 			return gulp.src(folderLocation)
 			.pipe(spsync({
 				"username": config.production ? production.username : test.username,
@@ -57,11 +60,12 @@ build.task('upload-app-pkg', {
 				"site": `https://${config.production ? production.tenant : test.tenant}.sharepoint.com/${config.production ? production.catalogSite : test.catalogSite}`,
 				"libraryPath": "AppCatalog",
 				"publish": true
-			}))
-			.on('finish', resolve);
+			}))					
+			.on('finish', resolve)
+			.on('error', handleError);
 		});
 	}
 });
-
+//gulp upload-app-pkg --ship --username $('cromwel.m.penaranda@accenturemanilapdc.onmicrosoft.com') --password $('Avanade1234') --tenant $('accenturemanilapdc') --catalogsite $('aa')
 
 build.initialize(gulp);

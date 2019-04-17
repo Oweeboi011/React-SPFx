@@ -6,4 +6,10 @@
         ComponentId="1d0f9fa8-57a6-481c-bc63-0c298d8302c0"
         Properties="{&quot;testMessage&quot;:&quot;Test message&quot;}">
     </ClientSideComponentInstance>
+        <ClientSideComponentInstance
+        Title="ListContextMenu"
+        Location="ClientSideExtension.ListViewCommandSet.CommandBar"
+        ComponentId="4a465ca6-4cc5-436d-8ab6-36e1f0417b28"
+        Properties="{&quot;sampleTextOne&quot;:&quot;One item is selected in the list.&quot;, &quot;sampleTextTwo&quot;:&quot;This command is always visible.&quot;,&quot;sampleTextThree&quot;:&quot;This command is always visible.&quot;}">
+    </ClientSideComponentInstance>
 </Elements>

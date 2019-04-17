@@ -25,7 +25,8 @@ export default class CustomFields extends React.Component<ICustomFieldsProps, {}
   public render(): React.ReactElement<{}> {
     return (
       <div className={styles.cell}>
-        { this.props.text }
+        <img src='http://aux2.iconspalace.com/uploads/outline-sharepoint-icon-256.png' height='20px'></img>
+        { "Testing Customized Field" }
       </div>
     );
   }

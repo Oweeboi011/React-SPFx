@@ -16,6 +16,7 @@
     "uall": "npm install npm -g && npm update -g",
     "srv": "gulp clean && gulp bundle && gulp trust-dev-cert && gulp serve",
     "dship": "gulp bundle --ship && gulp package-solution --ship",
+    "dprd": "gulp bundle --ship && gulp package-solution --ship && gulp upload-app-pkg --ship",
     "bsrv": "npm run build && npm run gtrust-this && npm run gserve-this && npm run exit",
     "nwp": "yo @microsoft/sharepoint --skip-install false --solution-name akuminaMenu --framework react --component-type webpart --component-name akuminaMenu  --component-description akuminaMenu description --environment spo --skip-feature-deployment false",
     "ne": "yo @microsoft/sharepoint --skip-install false --solution-name brandingHeaderFooter --framework react --component-type extension --extension-type ApplicationCustomizer --component-name brandingHeaderFooter  --component-description brandingHeaderFooter description --environment spo --skip-feature-deployment false"
@@ -41,6 +42,7 @@
     "@types/react-dom": "16.0.5",
     "@types/webpack-env": "1.13.1",
     "bootstrap": "^4.3.1",
+    "gulp-spsync-creds": "^2.3.8",
     "jquery": "^3.3.1",
     "office-ui-fabric-react": "5.135.0",
     "popper.js": "^1.14.7",
